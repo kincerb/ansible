@@ -1,0 +1,11 @@
+---
+hosts: all
+
+tasks:
+  -name: Create my user
+   user:
+     name: kincerb
+     comment: Brent Kincer
+
+
+...

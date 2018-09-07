@@ -1,0 +1,27 @@
+---
+- hosts: kincerb
+  gather_facts: false
+  tasks:
+    - name: Push out personal SSH keys
+      authorized_key:
+        user: kincerb
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_rsa.pub
+        - /Volumes/Data/Google/work/configs/ssh/kincerb_nationwide_rsa.pub
+
+- hosts: wasadmin
+  remote_user: kincerb
+  become: true
+  become_user: wasadmin
+  gather_facts: false
+  tasks:
+    - name: Push out wasadmin keys
+      authorized_key:
+        user: wasadmin
+        state: present
+        key: /Volumes/Data/Google/work/configs/ssh/wasadmin_rsa.pub
+...

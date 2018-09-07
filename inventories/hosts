@@ -1,0 +1,11 @@
+[personal-servers]
+example01.test.com
+example02.test.com
+
+[work-servers]
+example03.test.com
+example04.test.com
+
+[group01:children]
+personal-servers
+work-servers

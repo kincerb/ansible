@@ -1,0 +1,110 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Install docker reqs
+      apt:
+        name: '{{ package }}'
+        update_cache: yes
+      vars:
+        package:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+
+    - name: Add apt key from docker
+      apt_key:
+        id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add docker apt repo
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Install docker-ce
+      apt:
+        name: docker-ce
+
+    - name: Get docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 755
+        checksum: sha256:f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9
+
+    - name: Ensure docker is enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create kincerb
+      user:
+        name: kincerb
+        append: yes
+        comment: Brent Kincer
+        groups:
+          - docker
+
+    - name: Add SSH keys for kincerb
+      authorized_key:
+        user: kincerb
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
+        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_rsa.pub
+
+    - name: Setup sudo for kincerb
+      lineinfile:
+        path: /etc/sudoers.d/90-cloud-init-users
+        state: present
+        line: 'kincerb ALL=(ALL) NOPASSWD:ALL'
+
+    - name: Disable root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PermitRootLogin\s+(no|yes)'
+        line: 'PermitRootLogin no'
+      notify:
+        - reload sshd
+
+    - name: Enable agent forwarding
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowAgentForwarding\s+(no|yes)'
+        line: 'AllowAgentForwarding yes'
+      notify:
+        - reload sshd
+
+    - name: Enable TCP forwading
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowTcpForwarding\s+(no|yes)'
+        line: 'AllowTcpForwarding yes'
+      notify:
+        - reload sshd
+
+    - name: Enable X11 forwading
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?X11Forwarding\s+(no|yes)'
+        line: 'X11Forwarding yes'
+      notify:
+        - reload sshd
+
+  handlers:
+    - name: reload sshd
+      systemd:
+        name: sshd
+        state: reloaded
+
+...

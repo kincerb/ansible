@@ -107,3 +107,5 @@ secrets.sh
 # Docker stuff:
 */secrets/*
 *.env
+
+inventories/*

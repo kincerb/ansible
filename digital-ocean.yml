@@ -12,6 +12,7 @@
           - ca-certificates
           - curl
           - python3-pip
+          - python3-venv
           - software-properties-common
 
     - name: Add apt key from docker

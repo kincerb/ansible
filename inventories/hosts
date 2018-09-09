@@ -6,6 +6,9 @@ example02.test.com
 example03.test.com
 example04.test.com
 
+[personal-servers:vars]
+ansible_python_interpreter=/usr/bin/python3
+
 [group01:children]
 personal-servers
 work-servers

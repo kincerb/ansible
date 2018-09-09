@@ -2,7 +2,7 @@
 - hosts: all
 
   tasks:
-    - name: Install docker reqs
+    - name: Install needed packages
       apt:
         name: '{{ package }}'
         update_cache: yes
@@ -11,6 +11,7 @@
           - apt-transport-https
           - ca-certificates
           - curl
+          - python3-pip
           - software-properties-common
 
     - name: Add apt key from docker

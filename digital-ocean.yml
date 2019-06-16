@@ -32,10 +32,10 @@
 
     - name: Get docker-compose
       get_url:
-        url: https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64
+        url: https://github.com/docker/compose/releases/download/1.24.0/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
         mode: 755
-        checksum: sha256:f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9
+        checksum: sha256:bee6460f96339d5d978bb63d17943f773e1a140242dfa6c941d5e020a302c91b
 
     - name: Ensure docker is enabled
       systemd:

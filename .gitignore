@@ -90,20 +90,4 @@ nosetests.xml
 coverage.xml
 /htmlcov/
 
-# Translations
-*.mo
-
-# Rope
-.ropeproject
-
-# Django stuff:
-*.pot
-*/settings/secrets.*
-secrets.py
-secrets.sh
-.idea
-*/media/*
-
-# Docker stuff:
-*/secrets/*
-*.env
+.idea/

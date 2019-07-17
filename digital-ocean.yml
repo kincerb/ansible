@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: digital-ocean
 
   tasks:
     - name: Install needed packages
@@ -57,9 +57,9 @@
         state: present
         key: '{{ item }}'
       with_file:
-        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
-        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
-        - /Volumes/Data/Google/devbkincer/configs/ssh/kincerb_rsa.pub
+        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
+        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
+        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_rsa.pub
 
     - name: Setup sudo for kincerb
       lineinfile:

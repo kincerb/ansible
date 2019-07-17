@@ -13,7 +13,7 @@
         - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
         - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
         - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_rsa.pub
-        - /Users/kincerb/Google/workbkincer/configs/ssh/kincerb_nationwide_rsa.pub
+        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_nationwide_rsa.pub
   tags:
     - personal
     - never
@@ -28,7 +28,7 @@
       authorized_key:
         user: wasadmin
         state: present
-        key: "{{ lookup('file', '/Users/kincerb/Google/workbkincer/configs/ssh/wasadmin_rsa.pub') }}"
+        key: "{{ lookup('file', '/Users/kincerb/Google/devbkincer/configs/ssh/wasadmin_rsa.pub') }}"
   tags:
     - wasadmin
     - never
@@ -41,7 +41,7 @@
       authorized_key:
         user: mwauto
         state: present
-        key: "{{ lookup('file', '/Users/kincerb/Google/workbkincer/configs/ssh/mwauto_rsa.pub') }}"
+        key: "{{ lookup('file', '/Users/kincerb/Google/devbkincer/configs/ssh/mwauto_rsa.pub') }}"
   tags:
     - mwauto
     - never

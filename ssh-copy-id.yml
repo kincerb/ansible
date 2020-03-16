@@ -1,7 +1,6 @@
 ---
 - hosts:
     - kincerb
-    - all-linux
   gather_facts: false
   tasks:
     - name: Push out personal SSH keys
@@ -33,7 +32,7 @@
     - wasadmin
     - never
 
-- hosts: all-linux
+- hosts: checkins
   remote_user: mwauto
   gather_facts: false
   tasks:

@@ -1,14 +1,14 @@
-[personal-servers]
-example01.test.com
-example02.test.com
+[digitalocean]
+access
 
-[work-servers]
-example03.test.com
-example04.test.com
+[home]
+nuc
 
-[personal-servers:vars]
+[personal:children]
+digitalocean
+home
+
+[work]
+
+[digitalocean:vars]
 ansible_python_interpreter=/usr/bin/python3
-
-[group01:children]
-personal-servers
-work-servers

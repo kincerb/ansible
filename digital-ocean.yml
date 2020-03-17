@@ -2,10 +2,17 @@
 - hosts: digitalocean
 
   tasks:
+    - name: Update OS
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+      notify:
+        - reboot server
+
     - name: Install needed packages
       apt:
         name: '{{ package }}'
-        update_cache: yes
       vars:
         package:
           - apt-transport-https
@@ -126,5 +133,8 @@
       systemd:
         name: sshd
         state: reloaded
+
+    - name: reboot server
+      reboot:
 
 ...

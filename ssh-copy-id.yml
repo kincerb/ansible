@@ -1,6 +1,5 @@
 ---
-- hosts:
-    - kincerb
+- hosts: all
   gather_facts: false
   tasks:
     - name: Push out personal SSH keys
@@ -9,30 +8,13 @@
         state: present
         key: '{{ item }}'
       with_file:
-        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth1.pub
-        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_gpg_auth2.pub
-        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_rsa.pub
-        - /Users/kincerb/Google/devbkincer/configs/ssh/kincerb_nationwide_rsa.pub
+        - "{{ lookup('env', 'HOME') + '/.ssh/kincerb_gpg_auth1.pub' }}"
+        - "{{ lookup('env', 'HOME') + '/.ssh/kincerb_gpg_auth2.pub' }}"
   tags:
-    - personal
+    - kincerb
     - never
 
-- hosts: wasadmin
-  remote_user: kincerb
-  become: true
-  become_user: wasadmin
-  gather_facts: false
-  tasks:
-    - name: Push out wasadmin keys
-      authorized_key:
-        user: wasadmin
-        state: present
-        key: "{{ lookup('file', '/Users/kincerb/Google/devbkincer/configs/ssh/wasadmin_rsa.pub') }}"
-  tags:
-    - wasadmin
-    - never
-
-- hosts: checkins
+- hosts: all
   remote_user: mwauto
   gather_facts: false
   tasks:
@@ -40,7 +22,8 @@
       authorized_key:
         user: mwauto
         state: present
-        key: "{{ lookup('file', '/Users/kincerb/Google/devbkincer/configs/ssh/mwauto_rsa.pub') }}"
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/mwauto_rsa.pub') }}"
+        exclusive: True
   tags:
     - mwauto
     - never

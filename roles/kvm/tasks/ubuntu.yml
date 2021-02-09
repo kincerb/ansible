@@ -1,0 +1,9 @@
+---
+- name: Install libvirt packages
+  apt:
+    name: '{{ package }}'
+  vars:
+    package:
+      - qemu-kvm
+      - libvirt-daemon-system
+...

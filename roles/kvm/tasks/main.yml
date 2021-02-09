@@ -1,0 +1,18 @@
+---
+- name: Setup and install docker on ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['distribution']|lower == 'ubuntu'
+
+- name: Ensure libvirtd is enabled
+  systemd:
+    name: libvirtd
+    state: started
+    enabled: yes
+
+- name: Add kincerb to libvirt group
+  user:
+    name: kincerb
+    append: yes
+    groups:
+      - libvirt
+...

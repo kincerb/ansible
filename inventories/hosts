@@ -8,5 +8,8 @@ r820
 [docker]
 r820
 
+[kvm]
+r820
+
 [vars]
 ansible_python_interpreter=/usr/bin/python3

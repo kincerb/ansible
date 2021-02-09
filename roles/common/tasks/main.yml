@@ -53,16 +53,8 @@
   notify:
     - reload sshd
 
-- name: Install needed packages
-  apt:
-    name: '{{ package }}'
-  vars:
-    package:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - python3-pip
-      - python3-venv
-      - software-properties-common
+- name: Install needed packages on Ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['distribution']|lower == 'ubuntu'
 ...
 

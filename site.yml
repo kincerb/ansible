@@ -5,4 +5,5 @@
     - common
 
 - import_playbook: docker.yml
+- import_playbook: kvm.yml
 ...

@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - common
+
+- import_playbook: docker.yml
+...

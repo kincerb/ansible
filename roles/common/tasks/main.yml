@@ -1,0 +1,68 @@
+---
+- name: Add personal SSH keys
+  authorized_key:
+    user: kincerb
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - "{{ lookup('env', 'HOME') + '/.ssh/kincerb_gpg_auth1.pub' }}"
+    - "{{ lookup('env', 'HOME') + '/.ssh/kincerb_gpg_auth2.pub' }}"
+    - "{{ lookup('env', 'HOME') + '/.ssh/kincerb_forwarder.pub' }}"
+
+- name: Create sudoers.d file for kincerb
+  copy:
+    src: 01-kincerb
+    dest: /etc/sudoers.d/01-kincerb
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Disable root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PermitRootLogin\s+(no|yes)'
+    line: 'PermitRootLogin no'
+  notify:
+    - reload sshd
+
+- name: Enable agent forwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^[#]?AllowAgentForwarding\s+(no|yes)'
+    line: 'AllowAgentForwarding yes'
+  notify:
+    - reload sshd
+
+- name: Enable TCP forwading
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^[#]?AllowTcpForwarding\s+(no|yes)'
+    line: 'AllowTcpForwarding yes'
+  notify:
+    - reload sshd
+
+- name: Enable X11 forwading
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^[#]?X11Forwarding\s+(no|yes)'
+    line: 'X11Forwarding yes'
+  notify:
+    - reload sshd
+
+- name: Install needed packages
+  apt:
+    name: '{{ package }}'
+  vars:
+    package:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - python3-pip
+      - python3-venv
+      - software-properties-common
+...
+

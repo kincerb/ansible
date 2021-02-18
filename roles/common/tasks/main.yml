@@ -56,5 +56,9 @@
 - name: Install needed packages on Ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['distribution']|lower == 'ubuntu'
+
+- name: Create my default directories
+  become: no
+  import_tasks: dirs.yml
 ...
 

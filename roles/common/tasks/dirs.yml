@@ -1,0 +1,19 @@
+---
+- name: Create home config directory
+  file:
+    path: "{{ lookup('env', 'HOME') + '/.config' }}"
+    state: directory
+    mode: '0750'
+
+- name: Create home local bin directory
+  file:
+    path: "{{ lookup('env', 'HOME') + '/.local/bin' }}"
+    state: directory
+    mode: '0750'
+
+- name: Create home ssh socket directory
+  file:
+    path: "{{ lookup('env', 'HOME') + '/.ssh/socket' }}"
+    state: directory
+    mode: '0750'
+...

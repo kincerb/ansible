@@ -1,19 +1,31 @@
 ---
+- name: Create home projects directory
+  file:
+    path: "{{ projects_directory }}"
+    state: directory
+    mode: '0750'
+
 - name: Create home config directory
   file:
-    path: "{{ lookup('env', 'HOME') + '/.config' }}"
+    path: "{{ config_directory }}"
     state: directory
     mode: '0750'
 
 - name: Create home local bin directory
   file:
-    path: "{{ lookup('env', 'HOME') + '/.local/bin' }}"
+    path: "{{ home_bin_directory }}"
     state: directory
     mode: '0750'
 
 - name: Create home ssh socket directory
   file:
-    path: "{{ lookup('env', 'HOME') + '/.ssh/socket' }}"
+    path: "{{ ssh_socket_directory}}"
+    state: directory
+    mode: '0750'
+
+- name: Create home vim directory
+  file:
+    path: "{{ home_directory }}/.vim"
     state: directory
     mode: '0750'
 ...

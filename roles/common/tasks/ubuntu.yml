@@ -8,6 +8,7 @@
       - ca-certificates
       - curl
       - git
+      - jq
       - python3-pip
       - python3-venv
       - rsync

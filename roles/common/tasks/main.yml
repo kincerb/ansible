@@ -104,6 +104,7 @@
     - { src: "{{ projects_directory }}/config-files/.ideavimrc", dest: "{{ home_directory }}/.ideavimrc" }
     - { src: "{{ projects_directory }}/config-files/.gitconfig", dest: "{{ home_directory }}/.gitconfig" }
     - { src: "{{ projects_directory }}/config-files/bin/git-helper.py", dest: "{{ home_bin_directory }}/git-helper.py" }
+    - { src: /usr/bin/batcat, dest: "{{ home_bin_directory }}/bat" }
     - { src: "{{ config_directory }}/ansible/ansible.cfg", dest: "{{ home_directory }}/.ansible.cfg" }
     - { src: "{{ projects_directory }}/config-files/vim/coc-settings.json", dest: "{{ home_directory }}/.vim/coc-settings.json" }
 ...

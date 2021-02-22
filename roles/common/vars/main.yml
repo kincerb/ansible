@@ -6,4 +6,5 @@ config_directory: "{{ home_directory }}/.config"
 ssh_directory: "{{ home_directory }}/.ssh"
 ssh_socket_directory: "{{ ssh_directory }}/socket"
 compose_version: '1.28.2'
+node_version: '15.9.0'
 ...

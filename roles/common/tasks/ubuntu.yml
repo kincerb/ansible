@@ -1,5 +1,5 @@
 ---
-- name: Install needed packages
+- name: Install first-party packages
   apt:
     name: '{{ package }}'
   vars:
@@ -10,7 +10,6 @@
       - curl
       - git
       - jq
-      - nodejs
       - python3-pip
       - python3-venv
       - rsync
@@ -19,4 +18,14 @@
       - tmux
       - unzip
       - vim
+
+- name: Get nodejs stat
+  stat:
+    path: /usr/bin/node
+  register: node_stat
+  ignore_errors: true
+
+- name: Install nodejs
+  import_tasks: node.yml
+  when: node_stat.stat.exists is not defined
 ...

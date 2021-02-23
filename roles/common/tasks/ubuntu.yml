@@ -6,6 +6,7 @@
     package:
       - apt-transport-https
       - bat
+      - bridge-utils
       - ca-certificates
       - curl
       - git

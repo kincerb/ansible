@@ -6,4 +6,12 @@
     package:
       - qemu-kvm
       - libvirt-daemon-system
+
+- name: Configure netplan for bond and bridge
+  copy:
+    src: 00-installer-config.yaml
+    dest: /etc/netplan/00-installer-config.yaml
+    owner: root
+    group: root
+    mode: 0644
 ...

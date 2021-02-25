@@ -9,10 +9,11 @@
     state: started
     enabled: yes
 
-- name: Add kincerb to libvirt group
+- name: Add kincerb to libvirt groups
   user:
     name: kincerb
     append: yes
     groups:
       - libvirt
+      - kvm
 ...

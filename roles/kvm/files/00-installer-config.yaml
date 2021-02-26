@@ -5,18 +5,3 @@ network:
     eno1:
       dhcp4: true
       dhcp6: false
-    eno2: {}
-    eno3: {}
-  bonds:
-    bond0:
-      interfaces:
-        - eno2
-        - eno3
-      parameters:
-        mode: balance-xor
-  bridges:
-    br0:
-      dhcp4: true
-      dhcp6: false
-      interfaces:
-        - bond0

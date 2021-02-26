@@ -9,9 +9,16 @@
 
 - name: Configure netplan for bond and bridge
   copy:
-    src: 00-installer-config.yaml
-    dest: /etc/netplan/00-installer-config.yaml
+    src: "{{ item }}"
+    dest: /etc/netplan/{{ item }}
     owner: root
     group: root
     mode: 0644
+  loop:
+    - 00-installer-config.yaml
+    - 01-interfaces.yaml
+    - 02-bonds.yaml
+    - 03-bridges.yaml
+  notify:
+    - apply netplan
 ...

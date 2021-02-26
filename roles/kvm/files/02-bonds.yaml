@@ -1,0 +1,8 @@
+network:
+  bonds:
+    bond0:
+      interfaces:
+        - eno2
+        - eno3
+      parameters:
+        mode: balance-xor

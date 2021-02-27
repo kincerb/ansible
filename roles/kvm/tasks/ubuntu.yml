@@ -21,4 +21,14 @@
     - 03-bridges.yaml
   notify:
     - apply netplan
+
+- name: Add bridge to libvirt networks
+  copy:
+    src: bridge-bond.xml
+    dest: /etc/libvirt/qemu/networks/bridge-bond.xml
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    reload libvirtd
 ...

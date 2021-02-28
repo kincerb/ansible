@@ -5,3 +5,5 @@ network:
     eno1:
       dhcp4: true
       dhcp6: false
+      dhcp4-overrides:
+        hostname: r820

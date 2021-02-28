@@ -5,3 +5,8 @@ network:
       dhcp6: false
       interfaces:
         - bond0
+      parameters:
+        stp: false
+        forward-delay: 0
+      dhcp4-overrides:
+        hostname: r820-bridge

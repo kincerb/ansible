@@ -2,8 +2,8 @@
 - name: apply netplan
   command: netplan apply
 
-- name: reload libvirtd
+- name: restart libvirtd
   systemd:
     name: libvirtd
-    state: reloaded
+    state: restarted
 ...

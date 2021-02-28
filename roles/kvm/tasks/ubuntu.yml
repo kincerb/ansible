@@ -24,11 +24,11 @@
 
 - name: Add bridge to libvirt networks
   copy:
-    src: bridge-bond.xml
-    dest: /etc/libvirt/qemu/networks/bridge-bond.xml
+    src: physical-bridge.xml
+    dest: /etc/libvirt/qemu/networks/physical-bridge.xml
     owner: root
     group: root
     mode: 0600
   notify:
-    reload libvirtd
+    restart libvirtd
 ...

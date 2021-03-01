@@ -2,11 +2,25 @@ network:
   bridges:
     br0:
       dhcp4: true
-      dhcp6: false
+      dhcp6: true
       interfaces:
-        - bond0
+        - eno2
       parameters:
-        stp: false
-        forward-delay: 0
+        stp: true
+        forward-delay: 4
       dhcp4-overrides:
-        hostname: r820-bridge
+        hostname: r820-br0
+      dhcp6-overrides:
+        hostname: r820-br0
+    br1:
+      dhcp4: true
+      dhcp6: true
+      interfaces:
+        - eno3
+      parameters:
+        stp: true
+        forward-delay: 4
+      dhcp4-overrides:
+        hostname: r820-br1
+      dhcp6-overrides:
+        hostname: r820-br1

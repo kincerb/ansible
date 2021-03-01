@@ -4,6 +4,8 @@ network:
   ethernets:
     eno1:
       dhcp4: true
-      dhcp6: false
+      dhcp6: true
       dhcp4-overrides:
+        hostname: r820
+      dhcp6-overrides:
         hostname: r820

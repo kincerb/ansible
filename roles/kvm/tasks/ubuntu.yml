@@ -9,16 +9,18 @@
 
 - name: Configure netplan for bond and bridge
   copy:
-    src: "{{ item }}"
-    dest: /etc/netplan/{{ item }}
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
   loop:
-    - 00-installer-config.yaml
-    - 01-interfaces.yaml
-    - 02-bonds.yaml
-    - 03-bridges.yaml
+    - { src: 00-installer-config.yaml, dest: /etc/netplan/00-installer-config.yaml }
+    - { src: 01-interfaces.yaml, dest: /etc/netplan/01-interfaces.yaml }
+    - { src: 02-bonds.yaml, dest: /etc/netplan/02-bonds.yaml }
+    - { src: 03-bridges.yaml, dest: /etc/netplan/03-bridges.yaml }
+    - { src: 11-bridge-remove-netfilter.conf, dest: /etc/sysctl.d/11-bridge-remove-netfilter.conf }
+    - { src: 99-bridge.rules, dest: /etc/udev/rules.d/99-bridge.rules }
   notify:
     - apply netplan
 

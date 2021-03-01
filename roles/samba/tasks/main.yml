@@ -1,0 +1,5 @@
+---
+- name: Setup and install docker on ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['distribution']|lower == 'ubuntu'
+...

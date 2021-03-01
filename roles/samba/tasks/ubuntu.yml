@@ -1,0 +1,12 @@
+---
+- name: Install samba packages
+  apt:
+    name: '{{ package }}'
+  vars:
+    package:
+      - samba
+      - samba-common
+      - samba-common-bin
+      - samba-vfs-modules
+      - python-samba
+...

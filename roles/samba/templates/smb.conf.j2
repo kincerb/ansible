@@ -34,10 +34,10 @@ multicast dns register = no
 # Special configuration for Apple's Time Machine
 fruit:aapl = yes
 #======================= Share Definitions =======================
-[google]
-path = /jbod/google/
+{% for share in smb_shares %}
+[{{ share.name }}]
+path = {{ share.dir }}
 guest ok = no
-guest only = no
 read only = no
 browseable = yes
 inherit acls = yes
@@ -46,39 +46,15 @@ ea support = no
 store dos attributes = no
 vfs objects =
 printable = no
-create mask = 0664
-force create mode = 0664
-directory mask = 0775
-force directory mode = 0775
+create mask = 0660
+force create mode = 0660
+directory mask = 0770
+force directory mode = 0770
 hide special files = yes
 follow symlinks = yes
 hide dot files = yes
-valid users = "kincerb"
+valid users = {{ share.users|join(', ') }}
 invalid users =
 read list =
-write list = "kincerb"
-
-[data]
-path = /jbod/data/
-guest ok = no
-guest only = no
-read only = no
-browseable = yes
-inherit acls = yes
-inherit permissions = no
-ea support = no
-store dos attributes = no
-vfs objects =
-printable = no
-create mask = 0664
-force create mode = 0664
-directory mask = 0775
-force directory mode = 0775
-hide special files = yes
-follow symlinks = yes
-hide dot files = yes
-valid users = "kincerb"
-invalid users =
-read list =
-write list = "kincerb"
-
+write list = {{ share.users|join(', ') }}
+{% endfor %}

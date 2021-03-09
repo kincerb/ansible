@@ -9,4 +9,5 @@
       - samba-common-bin
       - samba-vfs-modules
       - python-samba
+      - libpam-winbind
 ...

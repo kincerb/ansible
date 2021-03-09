@@ -1,0 +1,40 @@
+---
+- name: Modify sshd_config
+  block:
+    - name: Disable root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PermitRootLogin\s+(no|yes)'
+        line: 'PermitRootLogin no'
+
+    - name: Enable agent forwarding
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowAgentForwarding\s+(no|yes)'
+        line: 'AllowAgentForwarding yes'
+
+    - name: Enable TCP forwading
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowTcpForwarding\s+(no|yes)'
+        line: 'AllowTcpForwarding yes'
+
+    - name: Enable X11 forwading
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?X11Forwarding\s+(no|yes)'
+        line: 'X11Forwarding yes'
+
+    - name: Disable password login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PasswordAuthentication\s+(no|yes)'
+        line: 'PasswordAuthentication no'
+  notify:
+    - reload sshd
+...

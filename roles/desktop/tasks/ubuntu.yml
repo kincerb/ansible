@@ -1,0 +1,41 @@
+---
+- name: Install first-party packages
+  apt:
+    name: '{{ package }}'
+  vars:
+    package:
+      - alacritty
+      - deepin-terminal
+      - dialog
+      - dosfstools
+      - dpkg
+      - e2fsprogs
+      - findutils
+      - fonts-powerline
+      - gnome-boxes
+      - gnome-tweaks
+      - lm-sensors
+      - lutris
+      - lz4
+      - ovmf
+      - pavucontrol
+      - pinentry-curses
+      - pylint
+      - ranger
+      - readline-common
+      - steam
+      - sysfsutils
+      - tilix
+      - ucf
+      - unzip
+      - util-linux
+      - vdpauinfo
+      - vim-gtk3
+      - virt-viewer
+      - xsel
+      - xz-utils
+
+- name: Install google-chrome-stable
+  apt:
+    deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+...

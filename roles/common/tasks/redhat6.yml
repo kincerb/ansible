@@ -1,0 +1,14 @@
+---
+- name: Install first-party packages
+  yum:
+    name: '{{ package }}'
+  vars:
+    package:
+      - curl
+      - git
+      - gnupg2
+      - gzip
+      - rsync
+      - unzip
+      - vim-enhanced
+...

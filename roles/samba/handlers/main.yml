@@ -2,5 +2,6 @@
 - name: reload samba
   systemd:
     name: smbd
-    state: reloaded
+    enabled: true
+    state: restarted
 ...

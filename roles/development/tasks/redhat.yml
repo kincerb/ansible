@@ -11,8 +11,26 @@
       - xz-devel
       - readline-devel
       - libuuid-devel
+      - openssl
       - openssl-devel
       - sqlite-devel
       - bzip2-devel
       - libffi-devel
+
+- name: Install rhel6 development packages
+  yum:
+    name: '{{ package }}'
+  when: ansible_facts['distribution_major_version'] == '6'
+  vars:
+    package:
+      - expat-devel
+      - libpcap-devel
+      - keyutils-libs-devel
+      - krb5-devel
+      - libcom_err-devel
+      - libidn-devel
+      - curl-devel
+      - uuid-devel
+      - kernel-headers
+      - db4-devel
 ...

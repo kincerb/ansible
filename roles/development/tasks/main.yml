@@ -1,4 +1,9 @@
 ---
-- name: Import distribution tasks
-  import_tasks: '{{ ansible_facts.distribution }}{{ ansible_facts.distribution_major_version }}.yml'
+- name: Install development tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['distribution']|lower == 'ubuntu'
+
+- name: Install development tasks for RHEL
+  import_tasks: redhat.yml
+  when: ansible_facts['distribution']|lower == 'redhat'
 ...

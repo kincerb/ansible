@@ -1,29 +1,42 @@
 ---
-- name: Install first-party packages
+- name: Install common packages
   apt:
     name: '{{ package }}'
   vars:
     package:
       - apt-transport-https
       - bat
-      - bridge-utils
       - ca-certificates
       - curl
+      - dialog
+      - dosfstools
+      - dpkg
+      - e2fsprogs
+      - findutils
+      - fonts-powerline
       - git
       - gnupg
       - gnupgconf
       - gnupg-utils
       - gzip
       - jq
+      - lz4
+      - pinentry-curses
+      - pylint
       - python3-pip
       - python3-venv
+      - ranger
+      - readline-common
       - rsync
       - silversearcher-ag
       - socat
       - software-properties-common
+      - sysfsutils
       - tmux
       - unzip
+      - util-linux
       - vim
+      - xz-utils
 
 - name: Get nodejs stat
   stat:

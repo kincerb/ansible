@@ -4,48 +4,8 @@
     name: '{{ package }}'
   vars:
     package:
+      - bridge-utils
       - qemu-kvm
       - libvirt-daemon-system
-
-- name: Configure netplan for bond and bridge
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - { src: 00-installer-config.yaml, dest: /etc/netplan/00-installer-config.yaml }
-    - { src: 01-interfaces.yaml, dest: /etc/netplan/01-interfaces.yaml }
-    - { src: 02-bridges.yaml, dest: /etc/netplan/02-bridges.yaml }
-    - { src: 11-bridge-remove-netfilter.conf, dest: /etc/sysctl.d/11-bridge-remove-netfilter.conf }
-    - { src: 99-bridge.rules, dest: /etc/udev/rules.d/99-bridge.rules }
-  notify:
-    - apply netplan
-
-- name: Add bridges to libvirt networks
-  copy:
-    src: "{{ item }}"
-    dest: /etc/libvirt/qemu/networks/{{ item }}
-    owner: root
-    group: root
-    mode: 0600
-  loop:
-    - bridge-br0.xml
-    - bridge-br1.xml
-  notify:
-    restart libvirtd
-
-- name: Add hugepages for file-serve guest
-  copy:
-    src: 12-hugepages.conf
-    dest: /etc/sysctl.d/12-hugepages.config
-    owner: root
-    group: root
-    mode: 0644
-  register: hugepages
-
-- name: Activate hugepages with sysctl
-  command: sysctl -p /etc/sysctl.d/12-hugepages.config
-  when: hugepages is changed
+      - ovmf
 ...

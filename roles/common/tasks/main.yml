@@ -5,8 +5,13 @@
     path: '{{ home_directory }}/.bashrc'
   register: bashrc_stat
 
-- name: Install common packages for distribution
-  import_tasks: '{{ ansible_facts.distribution }}{{ ansible_facts.distribution_major_version }}.yml'
+- name: Install common tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['distribution']|lower == 'ubuntu'
+
+- name: Install common tasks for RHEL
+  import_tasks: redhat.yml
+  when: ansible_facts['distribution']|lower == 'redhat'
 
 - name: Create home directories
   become: no
@@ -17,7 +22,9 @@
   loop:
     - { path: '{{ config_directory }}', mode: '0750' }
     - { path: '{{ home_bin_directory }}', mode: '0750' }
+    - { path: '{{ ssh_directory }}', mode: '0750' }
     - { path: '{{ ssh_socket_directory }}', mode: '0750' }
+    - { path: '{{ projects_directory }}', mode: '0750' }
     - { path: '{{ home_directory }}', mode: '0750' }
     - { path: '{{ home_directory }}/.vim', mode: '0750' }
 
@@ -32,6 +39,11 @@
   file:
     path: '{{ projects_directory }}/config-files/bin/git-helper.py'
     mode: '0750'
+  loop:
+    - '{{ projects_directory }}/config-files/bin/git-helper.py'
+    - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
+    - '{{ projects_directory }}/config-files/bin/tSend.sh'
+    - '{{ projects_directory }}/config-files/bin/tSend.sh'
 
 - name: Add personal SSH keys
   authorized_key:

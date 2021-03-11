@@ -1,0 +1,20 @@
+---
+- name: Install common packages
+  yum:
+    name: '{{ package }}'
+  vars:
+    package:
+      - curl
+      - git
+      - gnupg2
+      - gzip
+      - rsync
+      - unzip
+      - vim-enhanced
+      - xz
+
+- name: Install rhel6 packages
+  yum:
+    name: libselinux-python
+  when: ansible_facts['distribution_major_version'] == '6'
+...

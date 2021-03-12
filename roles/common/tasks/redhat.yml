@@ -1,9 +1,7 @@
 ---
 - name: Install common packages
   yum:
-    name: '{{ package }}'
-  vars:
-    package:
+    name:
       - curl
       - git
       - gnupg2

@@ -10,6 +10,7 @@
       - rsync
       - unzip
       - vim-enhanced
+      - wget
       - xz
 
 - name: Install common packages for RHEL6

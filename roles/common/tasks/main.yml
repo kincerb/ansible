@@ -5,15 +5,15 @@
     path: '{{ home_directory }}/.bashrc'
   register: bashrc_stat
 
-- name: Install common tasks for ubuntu
+- name: Import common tasks for ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
-- name: Install common tasks for RHEL
+- name: Import common tasks for RHEL
   import_tasks: redhat.yml
   when: ansible_facts['distribution']|lower == 'redhat'
 
-- name: Create home directories
+- name: Create config/bin directories in home
   become: no
   file:
     path: '{{ item.path }}'
@@ -44,7 +44,7 @@
     - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
     - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
 
-- name: Add personal SSH keys
+- name: Add SSH public keys from config-files
   authorized_key:
     user: kincerb
     state: present
@@ -72,14 +72,14 @@
     group: root
     mode: 0644
 
-- name: Remove ~/.bashrc provided by vendor
+- name: Remove default bashrc in home directory
   become:  no
   file:
     path: '{{ home_directory }}/.bashrc'
     state: absent
   when: bashrc_stat.stat.islnk is defined and bashrc_stat.stat.islnk == False
 
-- name: Create symlinks for environment
+- name: Create symlinks for config files
   become: no
   file:
     src: '{{ item.src }}'
@@ -101,10 +101,10 @@
     - { src: '{{ config_directory }}/ansible/ansible.cfg', dest: '{{ home_directory }}/.ansible.cfg' }
     - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
 
-- name: Import python tasks
+- name: Import common python tasks
   import_tasks: python.yml
 
-- name: Import node tasks for ubuntu
+- name: Import common node tasks for ubuntu
   import_tasks: node.yml
   when: ansible_facts['os_family']|lower == 'debian'
 ...

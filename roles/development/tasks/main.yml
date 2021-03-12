@@ -1,9 +1,9 @@
 ---
-- name: Install development tasks for ubuntu
+- name: Import development tasks for ubuntu
   import_tasks: ubuntu.yml
-  when: ansible_facts['distribution']|lower == 'ubuntu'
+  when: ansible_facts['distribution']|lower == 'debian'
 
-- name: Install development tasks for RHEL
+- name: Import development tasks for RHEL
   import_tasks: redhat.yml
   when: ansible_facts['distribution']|lower == 'redhat'
 ...

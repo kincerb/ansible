@@ -17,4 +17,9 @@
   yum:
     name: libselinux-python
   when: ansible_facts['distribution_major_version'] == '6'
+
+- name: Install rhel7 and newer packages
+  yum:
+    name: python3-pip
+  when: ansible_facts['distribution_major_version'] != '6'
 ...

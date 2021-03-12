@@ -1,8 +1,9 @@
 ---
-- name: Install common packages
+- name: Install common packages for RHELx
   yum:
     name:
       - curl
+      - gcc
       - git
       - gnupg2
       - gzip
@@ -11,13 +12,24 @@
       - vim-enhanced
       - xz
 
-- name: Install rhel6 packages
+- name: Install common packages for RHEL6
   yum:
     name: libselinux-python
   when: ansible_facts['distribution_major_version'] == '6'
 
-- name: Install rhel7 and newer packages
+- name: Install common packages for RHEL7
   yum:
-    name: python3-pip
-  when: ansible_facts['distribution_major_version'] != '6'
+    name:
+      - python3
+      - python3-devel
+      - python3-pip
+  when: ansible_facts['distribution_major_version'] == '7'
+
+- name: Install common packages for RHEL8
+  yum:
+    name:
+      - python38
+      - python38-devel
+      - python38-pip
+  when: ansible_facts['distribution_major_version'] == '8'
 ...

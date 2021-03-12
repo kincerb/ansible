@@ -1,32 +1,36 @@
 ---
-- name: Install devlopment packages
+- name: Install development packages
   yum:
     name:
-      - "Development tools"
+      - "@Development tools"
+      - expat-devel
+      - keyutils-libs-devel
+      - krb5-devel
       - zlib-devel
       - ncurses-devel
       - gdbm-devel
       - xz-devel
       - readline-devel
+      - libcom_err-devel
       - libuuid-devel
+      - libcurl-devel
+      - kernel-headers
       - openssl
       - openssl-devel
       - sqlite-devel
       - bzip2-devel
-      - libffi-devel
 
-- name: Install rhel6 development packages
+- name: Install RHEL6 development packages
   yum:
     name:
-      - expat-devel
-      - libpcap-devel
-      - keyutils-libs-devel
-      - krb5-devel
-      - libcom_err-devel
       - libidn-devel
-      - curl-devel
-      - uuid-devel
-      - kernel-headers
       - db4-devel
   when: ansible_facts['distribution_major_version'] == '6'
+
+- name: Install RHEL7+ development packages
+  yum:
+    name:
+      - libdb-devel
+      - libffi-devel
+  when: ansible_facts['distribution_major_version'] != '6'
 ...

@@ -2,14 +2,14 @@
 - name: Install python packages as user
   become: no
   pip: 
-    name: '{{ package }}'
+    executable: pip3
     extra_args: --user
-  vars:
-    package:
+    name:
       - ansible
       - black
       - powerline-status
       - psutil
       - pyuv
       - ranger-fm
+  when: (ansible_facts['distribution']|lower == 'redhat' and ansible_facts['distribution_major_version'] == '8')
 ...

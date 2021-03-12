@@ -1,8 +1,6 @@
 ---
 - name: Install desktop packages
   apt:
-    name: '{{ package }}'
-  vars:
     package:
       - alacritty
       - deepin-terminal

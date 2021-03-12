@@ -1,8 +1,6 @@
 ---
 - name: Install samba packages
   apt:
-    name: '{{ package }}'
-  vars:
     package:
       - samba
       - samba-common

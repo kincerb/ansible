@@ -1,8 +1,6 @@
 ---
 - name: Install libvirt packages
   apt:
-    name: '{{ package }}'
-  vars:
     package:
       - bridge-utils
       - qemu-kvm

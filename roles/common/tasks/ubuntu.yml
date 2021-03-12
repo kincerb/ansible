@@ -1,8 +1,6 @@
 ---
 - name: Install common packages
   apt:
-    name: '{{ package }}'
-  vars:
     package:
       - apt-transport-https
       - bat

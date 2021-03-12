@@ -1,9 +1,11 @@
 ---
-- name: Import tasks for main distribution
-  import_tasks: '{{ ansible_facts.distribution }}.yml'
+- name: Import desktop tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Download official VNC viewer
-  get_url: https://www.realvnc.com/download/file/viewer.files/VNC-Viewer-6.20.529-Linux-x64
-  dest: '{{ home_bin_directory }}/vnc-viewer'
-  mode: '0750'
+  get_url:
+    url: https://www.realvnc.com/download/file/viewer.files/VNC-Viewer-6.20.529-Linux-x64
+    dest: '{{ home_bin_directory }}/vnc-viewer'
+    mode: '0750'
 ...

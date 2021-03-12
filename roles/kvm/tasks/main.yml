@@ -1,11 +1,11 @@
 ---
 - name: Import kvm tasks for ubuntu
   import_tasks: ubuntu.yml
-  when: ansible_facts['distribution']|lower == 'debian'
+  when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Import kvm tasks for RHEL
   import_tasks: redhat.yml
-  when: ansible_facts['distribution']|lower == 'redhat'
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 # - name: Import host-based tasks
 #   import_tasks: '{{ ansible_facts.hostname }}.yml'

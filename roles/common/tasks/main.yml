@@ -11,7 +11,7 @@
 
 - name: Import common tasks for RHEL
   import_tasks: redhat.yml
-  when: ansible_facts['distribution']|lower == 'redhat'
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: Create config/bin directories in home
   become: no

@@ -7,7 +7,7 @@
 
 - name: Install common tasks for ubuntu
   import_tasks: ubuntu.yml
-  when: ansible_facts['distribution']|lower == 'ubuntu'
+  when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Install common tasks for RHEL
   import_tasks: redhat.yml
@@ -101,6 +101,10 @@
     - { src: '{{ config_directory }}/ansible/ansible.cfg', dest: '{{ home_directory }}/.ansible.cfg' }
     - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
 
-- name: Install user python packages
+- name: Import python tasks
   import_tasks: python.yml
+
+- name: Import node tasks for ubuntu
+  import_tasks: node.yml
+  when: ansible_facts['os_family']|lower == 'debian'
 ...

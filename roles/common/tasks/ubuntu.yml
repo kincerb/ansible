@@ -16,7 +16,6 @@
       - fonts-powerline
       - git
       - gnupg
-      - gnupgconf
       - gnupg-utils
       - gzip
       - jq

@@ -1,4 +1,10 @@
 ---
+- name: Enable the optional rpms repository on RHEL6
+  rhsm_repository:
+    name: rhel-6-server-optional-rpms
+    state: enabled
+  when: ansible_facts['distribution_major_version'] == '6'
+
 - name: Install development packages
   yum:
     name:
@@ -25,6 +31,7 @@
     name:
       - libidn-devel
       - db4-devel
+      - valgrind-devel
   when: ansible_facts['distribution_major_version'] == '6'
 
 - name: Install RHEL7+ development packages

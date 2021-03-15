@@ -1,6 +1,7 @@
 ---
-- name: reload docker
+- name: restart docker
   systemd:
     name: docker
-    state: reloaded
+    enabled: true
+    state: restarted
 ...

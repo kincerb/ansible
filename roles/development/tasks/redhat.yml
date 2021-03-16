@@ -21,9 +21,7 @@
       - libuuid-devel
       - libcurl-devel
       - kernel-headers
-      - openssl
-      - openssl-devel
-      - sqlite-devel
+      - tk-devel
       - bzip2-devel
 
 - name: Install RHEL6 development packages

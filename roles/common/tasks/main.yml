@@ -5,14 +5,6 @@
     path: '{{ home_directory }}/.bashrc'
   register: bashrc_stat
 
-- name: Import common tasks for ubuntu
-  import_tasks: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'debian'
-
-- name: Import common tasks for RHEL
-  import_tasks: redhat.yml
-  when: ansible_facts['os_family']|lower == 'redhat'
-
 - name: Create config/bin directories in home
   become: no
   file:
@@ -27,6 +19,14 @@
     - { path: '{{ projects_directory }}', mode: '0750' }
     - { path: '{{ home_directory }}', mode: '0750' }
     - { path: '{{ home_directory }}/.vim', mode: '0750' }
+
+- name: Import common tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Import common tasks for RHEL
+  import_tasks: redhat.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: Clone config-files to setup shell
   become: no

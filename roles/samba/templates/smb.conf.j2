@@ -20,38 +20,36 @@ printing = bsd
 printcap name = /dev/null
 unix extensions = yes
 wide links = no
-create mask = 0777
-directory mask = 0777
+create mask = 0770
+directory mask = 0770
 use sendfile = yes
-aio read size = 16384
-aio write size = 16384
+aio read size = 1
+aio write size = 1
 time server = no
 wins support = no
-multicast dns register = no
-# Special configuration for Apple's Time Machine
-fruit:aapl = yes
+multicast dns register = yes
 #======================= Share Definitions =======================
 {% for share in smb_shares %}
 [{{ share.name }}]
 path = {{ share.dir }}
-guest ok = no
-read only = no
+writable = yes
 browseable = yes
+valid users = {{ share.users|join(', ') }}
+write list = {{ share.users|join(', ') }}
+force group = +users
+force create mode = 0660
+create mask = 0660
+force directory mode = 0770
+directory mask = 0770
+guest ok = no
 inherit acls = yes
 inherit permissions = no
 ea support = no
 store dos attributes = no
-vfs objects =
 printable = no
-create mask = 0660
-force create mode = 0660
-directory mask = 0770
-force directory mode = 0770
 hide special files = yes
 follow symlinks = yes
 hide dot files = yes
-valid users = {{ share.users|join(', ') }}
 invalid users =
 read list =
-write list = {{ share.users|join(', ') }}
 {% endfor %}

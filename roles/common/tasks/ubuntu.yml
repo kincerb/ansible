@@ -33,6 +33,7 @@
       - unzip
       - util-linux
       - vim
+      - xsel
       - xz-utils
 
 - name: Create symlink to batcat as bat

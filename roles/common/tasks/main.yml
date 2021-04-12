@@ -89,6 +89,7 @@
     - { src: '{{ projects_directory }}/config-files/alacritty', dest: '{{ config_directory }}/alacritty' }
     - { src: '{{ projects_directory }}/config-files/ansible', dest: '{{ config_directory }}/ansible' }
     - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
+    - { src: '{{ projects_directory }}/config-files/kitty', dest: '{{ config_directory }}/kitty' }
     - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
     - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
     - { src: '{{ projects_directory }}/config-files/.bashrc', dest: '{{ home_directory }}/.bashrc' }

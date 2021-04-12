@@ -4,6 +4,7 @@
     package:
       - alacritty
       - deepin-terminal
+      - kitty
       - gnome-boxes
       - gnome-tweaks
       - lm-sensors

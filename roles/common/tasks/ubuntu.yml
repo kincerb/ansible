@@ -36,13 +36,6 @@
       - xsel
       - xz-utils
 
-- name: Create symlink to batcat as bat
-  become: no
-  file:
-    src: /usr/bin/batcat
-    dest: '{{ home_bin_directory }}/bat'
-    state: link
-
 - name: Get nodejs stat
   stat:
     path: /usr/bin/node

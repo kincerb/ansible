@@ -11,5 +11,4 @@
       - psutil
       - pyuv
       - ranger-fm
-  when: (ansible_facts['os_family']|lower == 'redhat' and ansible_facts['distribution_major_version'] == '8')
 ...

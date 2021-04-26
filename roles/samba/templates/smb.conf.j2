@@ -1,34 +1,18 @@
-#======================= Global Settings =======================
+# Global Settings
 [global]
 workgroup = nucoder
-server string = Shares on %h
-dns proxy = no
-log level = 0
+server string = %h samba server
+# Logging / Debugging
 log file = /var/log/samba/log.%m
 max log size = 5120
-logging = systemd
-encrypt passwords = true
-passdb backend = tdbsam
-obey pam restrictions = no
-unix password sync = no
-passwd program = /usr/bin/passwd %u
-passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
-pam password change = yes
-guest account = nobody
-load printers = no
-printing = bsd
-printcap name = /dev/null
-unix extensions = yes
-wide links = no
-create mask = 0770
-directory mask = 0770
-use sendfile = yes
-aio read size = 1
-aio write size = 1
-time server = no
-wins support = no
-multicast dns register = yes
-#======================= Share Definitions =======================
+logging = file
+panic action = /usr/share/samba/panic-action %d
+# Authentication
+server role = standalone server
+map to guest = bad user
+# Misc
+usershare max shares = 0
+# Shares
 {% for share in smb_shares %}
 [{{ share.name }}]
 path = {{ share.dir }}
@@ -36,13 +20,16 @@ writable = yes
 browseable = yes
 valid users = {{ share.users|join(', ') }}
 write list = {{ share.users|join(', ') }}
+
 force group = +users
-force create mode = 0660
+
 create mask = 0660
-force directory mode = 0770
+force create mode = 0660
+
 directory mask = 0770
+force directory mode = 0770
+
 guest ok = no
-inherit acls = yes
 inherit permissions = no
 ea support = no
 store dos attributes = no

@@ -8,4 +8,5 @@
 - import_playbook: kvm.yml
 - import_playbook: development.yml
 - import_playbook: desktop.yml
+- import_playbook: samba.yml
 ...

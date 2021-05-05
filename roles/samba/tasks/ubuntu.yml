@@ -6,6 +6,6 @@
       - samba-common
       - samba-common-bin
       - samba-vfs-modules
-      - python-samba
+      - python3-samba
       - libpam-winbind
 ...

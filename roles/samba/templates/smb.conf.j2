@@ -1,7 +1,9 @@
 # Global Settings
 [global]
 workgroup = nucoder
-server string = %h samba server
+server string = %h (Samba, Ubuntu)
+interfaces = 192.168.86.0/24
+bind interfaces only = yes
 # Logging / Debugging
 log file = /var/log/samba/log.%m
 max log size = 5120
@@ -9,9 +11,18 @@ logging = file
 panic action = /usr/share/samba/panic-action %d
 # Authentication
 server role = standalone server
+obey pam restrictions = yes
+unix password sync = yes
+passwd program = /usr/bin/passwd %u
+passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+pam password change = yes
 map to guest = bad user
 # Misc
 usershare max shares = 0
+# Default mask permissions for shares
+create mask = 0660
+directory mask = 0770
+
 # Shares
 {% for share in smb_shares %}
 [{{ share.name }}]
@@ -20,15 +31,7 @@ writable = yes
 browseable = yes
 valid users = {{ share.users|join(', ') }}
 write list = {{ share.users|join(', ') }}
-
 force group = +users
-
-create mask = 0660
-force create mode = 0660
-
-directory mask = 0770
-force directory mode = 0770
-
 guest ok = no
 inherit permissions = no
 ea support = no

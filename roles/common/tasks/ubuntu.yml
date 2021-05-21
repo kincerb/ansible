@@ -1,6 +1,7 @@
 ---
 - name: Install common packages
   apt:
+    update_cache: yes
     package:
       - apt-transport-https
       - bat

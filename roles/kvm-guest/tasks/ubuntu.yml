@@ -1,0 +1,8 @@
+---
+- name: Install kvm guest packages
+  apt:
+    package:
+      - qemu-guest-agent
+  notify:
+    - start qemu-guest-agent
+...

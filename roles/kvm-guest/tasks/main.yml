@@ -1,0 +1,5 @@
+---
+- name: Import kvm guest tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+...

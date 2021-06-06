@@ -1,0 +1,6 @@
+---
+- hosts: wireguard
+  become: true
+  roles:
+    - wireguard
+...

@@ -1,0 +1,6 @@
+---
+- name: Install wireguard
+  apt:
+    package:
+      - wireguard
+...

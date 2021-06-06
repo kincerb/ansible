@@ -1,0 +1,21 @@
+---
+- name: Import samba tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Ensure samba is enabled
+  systemd:
+    name: smbd
+    state: started
+    enabled: yes
+
+- name: Update samba config file
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload samba
+...

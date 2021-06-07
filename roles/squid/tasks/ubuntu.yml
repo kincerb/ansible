@@ -1,6 +1,6 @@
 ---
-- name: Install wireguard
+- name: Install squid
   apt:
     package:
-      - wireguard
+      - squid
 ...

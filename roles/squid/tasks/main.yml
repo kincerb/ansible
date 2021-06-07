@@ -1,5 +1,5 @@
 ---
-- name: Import samba tasks for ubuntu
+- name: Import squid tasks for ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 

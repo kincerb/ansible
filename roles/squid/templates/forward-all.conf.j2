@@ -1,0 +1,5 @@
+visible_hostname {{ inventory_hostname_short }}
+http_port 3128
+cache_dir diskd /var/spool/squid 300 16 256
+http_access allow all
+refresh_pattern -i \.(gif|png|jpg|jpeg|ico)$ 3600 90% 43200

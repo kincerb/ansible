@@ -2,4 +2,19 @@
 - name: Import samba tasks for ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Make copy of original configuration
+  command: 
+    cmd: /usr/bin/cp /etc/squid/squid.conf /etc/squid/squid.conf.original
+    creates: /etc/squid/squid.conf.original
+
+- name: Update squid configuration
+  template:
+    src: forward-all.conf.j2
+    dest: /etc/squid/squid.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: 
+    - reload squid
 ...

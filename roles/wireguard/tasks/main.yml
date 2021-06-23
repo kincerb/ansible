@@ -2,4 +2,18 @@
 - name: Import wireguard tasks for ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Add IP forwarding support
+  copy:
+    src: 99-wireguard.conf
+    dest: /etc/sysctl.d/99-wireguard.conf
+    owner: root
+    group: root
+    mode: 0644
+  register:
+    ipforwarding
+
+- name: Activate IP forwarding
+  command: sysctl -p /etc/sysctl.d/99-wireguard.conf
+  when: ipforwading is changed
 ...

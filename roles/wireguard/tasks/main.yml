@@ -15,5 +15,21 @@
 
 - name: Activate IP forwarding
   command: sysctl -p /etc/sysctl.d/99-wireguard.conf
-  when: ipforwading is changed
+  when: ipforwarding is changed
+
+- name: Create key pair
+  shell:
+    chdir: /etc/wireguard
+    cmd: wg genkey |tee privatekey |wg publickey > publickey
+    creates: /etc/wireguard/*key
+
+- name: Set proper permissions on keys
+  file:
+    path: '{{ item }}'
+    owner: root
+    group: root
+    mode: '0700'
+  loop:
+    - /etc/wireguard/privatekey
+    - /etc/wireguard/publickey
 ...

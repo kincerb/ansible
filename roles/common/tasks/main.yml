@@ -37,7 +37,7 @@
 - name: Set permissions for executables in config-files
   become:  no
   file:
-    path: '{{ projects_directory }}/config-files/bin/git-helper.py'
+    path: '{{ item }}'
     mode: '0750'
   loop:
     - '{{ projects_directory }}/config-files/bin/git-helper.py'

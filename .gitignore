@@ -91,3 +91,5 @@ coverage.xml
 /htmlcov/
 
 .idea/
+scratch*
+tags

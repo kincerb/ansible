@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+script=$(basename $0)
+
+up() {
+    iptables -A FORWARD -i wg0 -j ACCEPT
+    iptables -t nat -A POSTROUTING -o {{ ext_interface }} -j MASQUERADE
+}
+
+down() {
+    iptables -D FORWARD -i wg0 -j ACCEPT
+    iptables -t nat -D POSTROUTING -o {{ ext_interface }} -j MASQUERADE
+}
+
+print_help() {
+    cat <<EOF >&2
+
+Usage: ${script} [--up|--down]
+
+This script runs iptables rules after a wireguard interface has been brought up, or tore down.
+           
+EOF
+}
+
+#---------------------------------
+# Here's where the magic happens  |
+#---------------------------------
+
+while :; do
+    case $1 in
+        -d|--down)
+            down
+            exit;;
+        -u|--up)
+            up
+            exit;;
+        -h|--help)
+            print_help
+            exit;;
+        --) # End of all options
+            shift; break;;
+        -*)
+            say Error "Unknown option (ignored): $1" >&2
+            shift;;
+        *) # No more options
+            break;;
+    esac
+done

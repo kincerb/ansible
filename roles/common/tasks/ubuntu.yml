@@ -17,6 +17,7 @@
       - gnupg
       - gnupg-utils
       - gzip
+      - iftop
       - jq
       - lz4
       - pinentry-curses

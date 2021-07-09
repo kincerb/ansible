@@ -4,12 +4,12 @@ script=$(basename $0)
 
 up() {
     iptables -A FORWARD -i wg0 -j ACCEPT
-    iptables -t nat -A POSTROUTING -o {{ ext_interface }} -j MASQUERADE
+    iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o {{ ext_interface }} -j MASQUERADE
 }
 
 down() {
     iptables -D FORWARD -i wg0 -j ACCEPT
-    iptables -t nat -D POSTROUTING -o {{ ext_interface }} -j MASQUERADE
+    iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o {{ ext_interface }} -j MASQUERADE
 }
 
 print_help() {

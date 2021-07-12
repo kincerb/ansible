@@ -1,0 +1,25 @@
+---
+- name: Install common packages
+  package:
+    name: '{{ item }}'
+    state: latest
+  loop:
+    - sudo
+    - bat
+    - lsof
+    - python3-pip
+    - python3-pip-wheel
+    - python3-virtualenv
+    - socat
+    - xsel
+
+- name: Get nodejs stat
+  stat:
+    path: /usr/bin/node
+  register: node_stat
+  ignore_errors: true
+
+- name: Install nodejs
+  import_tasks: node.yml
+  when: node_stat.stat.exists is not defined
+...

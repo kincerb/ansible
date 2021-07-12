@@ -28,6 +28,10 @@
   import_tasks: redhat.yml
   when: ansible_facts['os_family']|lower == 'redhat'
 
+- name: Import common tasks for Suse
+  import_tasks: suse.yml
+  when: ansible_facts['os_family']|lower == 'suse'
+
 - name: Clone config-files to setup shell
   become: no
   git:
@@ -102,8 +106,4 @@
 
 - name: Import common python tasks
   import_tasks: python.yml
-
-- name: Import common node tasks for ubuntu
-  import_tasks: node.yml
-  when: ansible_facts['os_family']|lower == 'debian'
 ...

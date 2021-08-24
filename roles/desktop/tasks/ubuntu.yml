@@ -21,4 +21,12 @@
 - name: Install google-chrome-stable
   apt:
     deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+- name: Remove gnome-keyring ssh agent
+  file:
+    src: /etc/xdg/autostart/gnome-keyring-ssh.desktop
+    dest: /dev/null
+    state: link
+    force: yes
+  when: ansible_facts['lsb']['id']|lower == 'pop'
 ...

@@ -1,6 +1,10 @@
 ---
-- name: Install squid packages
+- name: Install samba packages
   apt:
     package:
-      - squid
+      - samba-common
+      - samba-common-bin
+      - samba-vfs-modules
+      - python3-samba
+      - libpam-winbind
 ...

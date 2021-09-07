@@ -1,0 +1,7 @@
+---
+- name: Install samba client packages
+  apt:
+    update_cache: yes
+    package:
+      - cifs-utils
+...

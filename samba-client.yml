@@ -1,0 +1,6 @@
+---
+- hosts: samba-client
+  become: true
+  roles:
+    - samba-client
+...

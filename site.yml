@@ -9,4 +9,5 @@
 - import_playbook: development.yml
 - import_playbook: desktop.yml
 - import_playbook: samba.yml
+- import_playbook: samba-client.yml
 ...

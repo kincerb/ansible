@@ -46,5 +46,5 @@
 
 - name: Install nodejs
   import_tasks: node.yml
-  when: node_stat.stat.exists is not defined
+  when: node_stat.stat
 ...

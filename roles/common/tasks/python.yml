@@ -6,7 +6,7 @@
     name:
       - ansible
       - black
-      - powerline-status
+      - flake8
       - psutil
       - pyuv
       - ranger-fm

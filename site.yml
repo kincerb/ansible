@@ -1,9 +1,5 @@
 ---
-- hosts: all
-  become: true
-  roles:
-    - common
-
+- import_playbook: common.yml
 - import_playbook: docker.yml
 - import_playbook: kvm.yml
 - import_playbook: development.yml

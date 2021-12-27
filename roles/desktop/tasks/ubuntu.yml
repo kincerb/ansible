@@ -2,13 +2,10 @@
 - name: Install desktop packages
   apt:
     package:
-      - alacritty
-      - deepin-terminal
       - kitty
       - gnome-boxes
       - gnome-tweaks
       - lm-sensors
-      - lutris
       - pavucontrol
       - steam
       - tilix
@@ -24,8 +21,8 @@
 
 - name: Remove gnome-keyring ssh agent
   file:
-    src: /etc/xdg/autostart/gnome-keyring-ssh.desktop
-    dest: /dev/null
+    src: /dev/null
+    dest: /etc/xdg/autostart/gnome-keyring-ssh.desktop
     state: link
     force: yes
   when: ansible_facts['lsb']['id']|lower == 'pop'

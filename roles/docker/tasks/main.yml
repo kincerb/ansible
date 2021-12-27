@@ -3,12 +3,6 @@
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
-- name: Get docker-compose
-  get_url:
-    url: https://github.com/docker/compose/releases/download/{{ compose_version }}/docker-compose-Linux-x86_64
-    dest: /usr/local/bin/docker-compose
-    mode: 755
-
 - name: Ensure docker is enabled
   systemd:
     name: docker

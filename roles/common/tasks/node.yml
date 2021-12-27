@@ -3,13 +3,13 @@
   block:
     - name: Download script
       get_url: 
-        url: https://deb.nodesource.com/setup_15.x
-        dest: /tmp/node_setup_15.x.sh
+        url: https://deb.nodesource.com/setup_17.x
+        dest: /tmp/node_setup_17.x.sh
         mode: '0750'
 
     - name: Run nodejs setup script
       shell:
-        cmd: /tmp/node_setup_15.x.sh
+        cmd: /tmp/node_setup_17.x.sh
         creates: /usr/bin/node
 
     - name: Install nodejs via apt
@@ -19,7 +19,7 @@
   always:
     - name: Remove nodejs setup script
       file:
-        path: /tmp/node_setup_15.x.sh
+        path: /tmp/node_setup_17.x.sh
         state: absent
       ignore_errors: true
 ...

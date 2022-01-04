@@ -1,0 +1,9 @@
+---
+- name: Install common packages
+  pacman:
+    name:
+      - docker
+      - minikube
+    state: present
+    update_cache: yes
+...

@@ -1,3 +1,8 @@
 ---
-node_version: '15.9.0'
+home_directory: "{{ lookup('env', 'HOME') }}"
+home_bin_directory: '{{ home_directory }}/.local/bin'
+projects_directory: '{{ home_directory }}/Projects'
+config_directory: '{{ home_directory }}/.config'
+ssh_directory: '{{ home_directory }}/.ssh'
+ssh_socket_directory: '{{ ssh_directory }}/socket'
 ...

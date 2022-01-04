@@ -3,6 +3,10 @@
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
+- name: Setup and install docker on Arch
+  import_tasks: arch.yml
+  when: ansible_facts['os_family']|lower == 'archlinux'
+
 - name: Ensure docker is enabled
   systemd:
     name: docker

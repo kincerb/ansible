@@ -19,6 +19,12 @@
   apt:
     deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
+- name: Download official VNC viewer
+  get_url:
+    url: https://www.realvnc.com/download/file/viewer.files/VNC-Viewer-6.21.1109-Linux-x64
+    dest: '{{ home_bin_directory }}/vnc-viewer'
+    mode: '0750'
+
 - name: Remove gnome-keyring ssh agent
   file:
     src: /dev/null

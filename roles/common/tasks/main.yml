@@ -32,6 +32,10 @@
   import_tasks: suse.yml
   when: ansible_facts['os_family']|lower == 'suse'
 
+- name: Import common tasks for Arch
+  import_tasks: arch.yml
+  when: ansible_facts['os_family']|lower == 'archlinux'
+
 - name: Clone config-files to setup shell
   become: no
   git:

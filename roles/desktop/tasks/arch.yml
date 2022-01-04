@@ -1,0 +1,9 @@
+---
+- name: Install common packages
+  pacman:
+    name:
+      - kitty
+      - google-chrome-dev
+    state: present
+    update_cache: yes
+...

@@ -3,9 +3,7 @@
   pacman:
     name:
       - bat
-      - docker
       - nodejs
-      - minikube
       - ranger
       - rsync
       - socat

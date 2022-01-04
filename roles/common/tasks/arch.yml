@@ -1,0 +1,18 @@
+---
+- name: Install common packages
+  pacman:
+    name:
+      - bat
+      - docker
+      - nodejs
+      - minikube
+      - ranger
+      - rsync
+      - socat
+      - the_silver_searcher
+      - tmux
+      - vim
+      - xsel
+    state: present
+    update_cache: yes
+...

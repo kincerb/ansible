@@ -1,0 +1,15 @@
+---
+- name: Get nerd fonts and install
+  block:
+    - name: Create fonts download directory
+      become: no
+      file:
+        path: '{{ home_directory }}/Downloads/fonts'
+        state: directory
+
+    - name: Download fonts
+      become: no
+      get_url:
+        url:
+        dest:
+...

@@ -25,5 +25,4 @@
       register: shares_added
 
   when: virtio_shares is defined
-  become: true
 ...

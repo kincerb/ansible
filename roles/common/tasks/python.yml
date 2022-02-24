@@ -1,5 +1,6 @@
 ---
 - name: Install python packages as user
+  become: false
   pip: 
     executable: pip3
     extra_args: --user
@@ -8,10 +9,10 @@
       - psutil
 
 - name: Install python packages as user
+  become: false
   pip: 
     executable: pipx
     name:
-      - ansible
       - black
       - docformatter
       - flake8

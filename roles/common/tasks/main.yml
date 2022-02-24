@@ -1,10 +1,4 @@
 ---
-- name: Get ~/.bashrc stats
-  become: no
-  stat:
-    path: '{{ home_directory }}/.bashrc'
-  register: bashrc_stat
-
 - name: Create config/bin directories in home
   become: no
   file:
@@ -72,21 +66,6 @@
     group: root
     mode: 0600
 
-- name: Create profile.d file for my shell defaults
-  copy:
-    src: 01-nucoder.sh
-    dest: /etc/profile.d/01-nucoder.sh
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Remove default bashrc in home directory
-  become:  no
-  file:
-    path: '{{ home_directory }}/.bashrc'
-    state: absent
-  when: bashrc_stat.stat.islnk is defined and bashrc_stat.stat.islnk == False
-
 - name: Create symlinks for config files
   become: no
   file:
@@ -99,7 +78,6 @@
     - { src: '{{ projects_directory }}/config-files/powerline', dest: '{{ config_directory }}/powerline' }
     - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
     - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
-    - { src: '{{ projects_directory }}/config-files/.bashrc', dest: '{{ home_directory }}/.bashrc' }
     - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
     - { src: '{{ projects_directory }}/config-files/.ideavimrc', dest: '{{ home_directory }}/.ideavimrc' }
     - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
@@ -107,6 +85,15 @@
     - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
     - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
     - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
+
+- name: Source common.sh in default bashrc
+  ansible.builtin.blockinfile:
+    path: '{{ home_directory }}/.bashrc'
+    state: present
+    block: |
+      if [ -f ~/.config/bash.d/common.sh ]; then
+          source ~/.config/bash.d/common.sh
+      fi
 
 - name: Import common python tasks
   import_tasks: python.yml

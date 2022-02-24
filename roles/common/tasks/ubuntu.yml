@@ -12,7 +12,6 @@
       - dpkg
       - e2fsprogs
       - findutils
-      - fonts-powerline
       - git
       - gnupg
       - gnupg-utils
@@ -24,7 +23,6 @@
       - pylint
       - python3-pip
       - python3-venv
-      - ranger
       - readline-common
       - rsync
       - silversearcher-ag

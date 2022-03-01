@@ -8,8 +8,8 @@
         mode: '0750'
 
     - name: Run nodejs setup script
-      shell:
-        cmd: /tmp/node_setup_17.x.sh
+      command: /tmp/node_setup_17.x.sh
+      args:
         creates: /usr/bin/node
 
     - name: Install nodejs via apt
@@ -21,5 +21,5 @@
       file:
         path: /tmp/node_setup_17.x.sh
         state: absent
-      ignore_errors: true
+      ignore_errors: true # noqa ignore-errors
 ...

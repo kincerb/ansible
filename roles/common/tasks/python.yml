@@ -11,12 +11,13 @@
 - name: Install python packages as user
   become: false
   pip: 
-    executable: pipx
-    name:
-      - black
-      - docformatter
-      - flake8
-      - isort
-      - jedi-language-server
-      - ranger-fm
+    executable: '{{ home_bin_directory }}/pipx'
+    name: '{{ item }}'
+  loop:
+    - black
+    - docformatter
+    - flake8
+    - isort
+    - jedi-language-server
+    - ranger-fm
 ...

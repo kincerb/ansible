@@ -55,7 +55,7 @@
         - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
 
     - name: Add SSH public keys from config-files
-      authorized_key:
+      ansible.posix.authorized_key:
         user: kincerb
         state: present
         key: '{{ item }}'

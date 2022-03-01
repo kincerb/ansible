@@ -7,7 +7,7 @@
   block:
     - name: Create mountpoints
       ansible.builtin.file:
-        path: {{ item.mountpoint }}
+        path: '{{ item.mountpoint }}'
         state: directory
         owner: kincerb
         group: users
@@ -16,8 +16,8 @@
 
     - name: Configure and mount virtio_shares
       ansible.builtin.mount:
-        path: {{ item.mountpoint }}
-        src: {{ item.name }}
+        path: '{{ item.mountpoint }}'
+        src: '{{ item.name }}'
         fstype: virtiofs
         opts: rw,noatime,_netdev
         state: mounted

@@ -14,15 +14,14 @@
         mode: '2755'
       loop: "{{ virtio_shares }}"
 
-    - name: Add virtiofs shares to fstab
-      ansible.builtin.blockinfile:
-        path: /etc/fstab
-        state: present
-        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
-        block: |
-          {{ item.name }} {{ item.mountpoint }} virtiofs rw,noatime,_netdev 0 2
-      loop: "{{ virtio_shares  }}"
-      register: shares_added
+    - name: Configure and mount virtio_shares
+      ansible.builtin.mount:
+        path: {{ item.mountpoint }}
+        src: {{ item.name }}
+        fstype: virtiofs
+        opts: rw,noatime,_netdev
+        state: mounted
+      loop: "{{ virtio_shares }}"
 
   when: virtio_shares is defined
 ...

@@ -1,10 +1,4 @@
 ---
-- name: Get ~/.bashrc stats
-  become: no
-  stat:
-    path: '{{ home_directory }}/.bashrc'
-  register: bashrc_stat
-
 - name: Create config/bin directories in home
   become: no
   file:
@@ -80,13 +74,6 @@
     group: root
     mode: 0644
 
-- name: Remove default bashrc in home directory
-  become:  no
-  file:
-    path: '{{ home_directory }}/.bashrc'
-    state: absent
-  when: bashrc_stat.stat.islnk is defined and bashrc_stat.stat.islnk == False
-
 - name: Create symlinks for config files
   become: no
   file:
@@ -96,7 +83,7 @@
   loop:
     - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
     - { src: '{{ projects_directory }}/config-files/kitty', dest: '{{ config_directory }}/kitty' }
-    - { src: '{{ projects_directory }}/config-files/powerline', dest: '{{ config_directory }}/powerline' }
+    - { src: '{{ projects_directory }}/config-files/nvim', dest: '{{ config_directory }}/nvim' }
     - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
     - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
     - { src: '{{ projects_directory }}/config-files/.bashrc', dest: '{{ home_directory }}/.bashrc' }

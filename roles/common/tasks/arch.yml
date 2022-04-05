@@ -1,10 +1,10 @@
 ---
 - name: Install common packages
-  pacman:
+  community.general.pacman:
     name:
       - bat
+      - neovim
       - nodejs
-      - ranger
       - rsync
       - socat
       - the_silver_searcher

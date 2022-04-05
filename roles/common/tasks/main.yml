@@ -1,5 +1,6 @@
 ---
 - name: Create sudoers.d file for kincerb
+  become: true
   copy:
     src: 01-kincerb
     dest: /etc/sudoers.d/01-kincerb
@@ -46,11 +47,7 @@
       git:
         repo: 'https://github.com/kincerb/config-files.git'
         dest: '{{ projects_directory }}/config-files'
-        - name: Clone config-files to setup shell
-          git:
-            repo: 'https://github.com/kincerb/config-files.git'
-            dest: '{{ projects_directory }}/config-files'
-            version: master
+        version: master
 
     - name: Set permissions for executables in config-files
       file:
@@ -61,14 +58,14 @@
         - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
         - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
 
-    - name: Add SSH public keys from config-files
-      ansible.posix.authorized_key:
-        user: kincerb
-        state: present
-        key: '{{ item }}'
-      with_file:
-        - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth1.pub'
-        - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth2.pub'
+    # - name: Add SSH public keys from config-files
+    #   ansible.posix.authorized_key:
+    #     user: kincerb
+    #     state: present
+    #     key: '{{ item }}'
+    #   with_file:
+    #     - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth1.pub'
+    #     - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth2.pub'
 
     - name: Create symlinks for config files
       file:
@@ -97,8 +94,6 @@
           if [ -f ~/.config/bash.d/common.sh ]; then
               source ~/.config/bash.d/common.sh
           fi
-  become: false
-
 
 - name: Import sshd tasks
   import_tasks: sshd.yml

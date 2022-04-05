@@ -1,5 +1,6 @@
 ---
 - name: Install common packages
+  become: true
   apt:
     update_cache: yes
     package:

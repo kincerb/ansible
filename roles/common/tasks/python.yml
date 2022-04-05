@@ -1,16 +1,12 @@
 ---
 - name: Install python packages as user
-  become: false
   pip:
     executable: pip3
     extra_args: --user
     name:
       - pipx
-      - psutil
-      - pyuv
 
 - name: Install packages with pipx
-  become: false
   community.general.pipx:
     install_deps: true
     name: '{{ item }}'

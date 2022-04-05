@@ -1,5 +1,6 @@
 ---
 - name: Install common packages
+  become: true
   community.general.pacman:
     name:
       - bat

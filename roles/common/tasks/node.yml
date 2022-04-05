@@ -8,11 +8,13 @@
         mode: '0750'
 
     - name: Run nodejs setup script
+      become: true
       command: /tmp/node_setup_17.x.sh
       args:
         creates: /usr/bin/node
 
     - name: Install nodejs via apt
+      become: true
       apt:
         name: nodejs
 

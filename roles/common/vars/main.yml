@@ -1,5 +1,5 @@
 ---
-home_directory: "{{ lookup('env', 'HOME') }}"
+home_directory: "{{ ansible_facts['env']['HOME'] }}"
 home_bin_directory: '{{ home_directory }}/.local/bin'
 projects_directory: '{{ home_directory }}/Projects'
 config_directory: '{{ home_directory }}/.config'

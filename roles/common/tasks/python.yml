@@ -4,10 +4,7 @@
     executable: pip3
     extra_args: --user
     name:
-      - ansible
-      - black
-      - flake8
+      - pipx
       - psutil
       - pyuv
-      - ranger-fm
 ...

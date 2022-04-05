@@ -8,4 +8,19 @@
       - pipx
       - psutil
       - pyuv
+
+- name: Install packages with pipx
+  become: false
+  community.general.pipx:
+    install_deps: true
+    name: '{{ item }}'
+  loop:
+    - ansible
+    - black
+    - docformatter
+    - flake8
+    - isort
+    - jedi-language-server
+    - pylint
+    - ranger-fm
 ...

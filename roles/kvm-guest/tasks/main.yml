@@ -2,4 +2,26 @@
 - name: Import kvm guest tasks for ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Configure virtiofs shares
+  block:
+    - name: Create mountpoints
+      ansible.builtin.file:
+        path: '{{ item.mountpoint }}'
+        state: directory
+        owner: kincerb
+        group: users
+        mode: '2755'
+      loop: "{{ virtio_shares }}"
+
+    - name: Configure and mount virtio_shares
+      ansible.builtin.mount:
+        path: '{{ item.mountpoint }}'
+        src: '{{ item.name }}'
+        fstype: virtiofs
+        opts: rw,noatime,_netdev
+        state: mounted
+      loop: "{{ virtio_shares }}"
+
+  when: virtio_shares is defined
 ...

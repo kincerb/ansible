@@ -1,4 +1,43 @@
 ---
+- name: Create sudoers.d file for kincerb
+  copy:
+    src: 01-kincerb
+    dest: /etc/sudoers.d/01-kincerb
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Import common tasks for ubuntu
+  import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Import common tasks for RHEL
+  import_tasks: redhat.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: Import common tasks for Suse
+  import_tasks: suse.yml
+  when: ansible_facts['os_family']|lower == 'suse'
+
+- name: Import common tasks for Arch
+  import_tasks: arch.yml
+  when: ansible_facts['os_family']|lower == 'archlinux'
+
+- name: Setup various config files from git repo
+  block:
+    - name: Create config/bin directories in home
+      file:
+        path: '{{ item.path }}'
+        state: directory
+        mode: '{{ item.mode }}'
+      loop:
+        - { path: '{{ config_directory }}', mode: '0750' }
+        - { path: '{{ home_bin_directory }}', mode: '0750' }
+        - { path: '{{ ssh_directory }}', mode: '0750' }
+        - { path: '{{ ssh_socket_directory }}', mode: '0750' }
+        - { path: '{{ projects_directory }}', mode: '0750' }
+        - { path: '{{ home_directory }}', mode: '0750' }
+        - { path: '{{ home_directory }}/.vim', mode: '0750' }
 - name: Create config/bin directories in home
   become: no
   file:
@@ -38,9 +77,14 @@
   git:
     repo: 'https://github.com/kincerb/config-files.git'
     dest: '{{ projects_directory }}/config-files'
+    - name: Clone config-files to setup shell
+      git:
+        repo: 'https://github.com/kincerb/config-files.git'
+        dest: '{{ projects_directory }}/config-files'
+        version: master
 
 - name: Set permissions for executables in config-files
-  become:  no
+  become: false
   file:
     path: '{{ item }}'
     mode: '0750'
@@ -49,54 +93,46 @@
     - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
     - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
 
-- name: Add SSH public keys from config-files
-  authorized_key:
-    user: kincerb
-    state: present
-    key: '{{ item }}'
-  with_file:
-    - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth1.pub'
-    - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth2.pub'
+    - name: Add SSH public keys from config-files
+      ansible.posix.authorized_key:
+        user: kincerb
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth1.pub'
+        - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth2.pub'
+
+    - name: Create symlinks for config files
+      file:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+        state: link
+      loop:
+        - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
+        - { src: '{{ projects_directory }}/config-files/kitty', dest: '{{ config_directory }}/kitty' }
+        - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
+        - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
+        - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
+        - { src: '{{ projects_directory }}/config-files/.ideavimrc', dest: '{{ home_directory }}/.ideavimrc' }
+        - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
+        - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
+        - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
+        - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
+        - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
+
+    - name: Source common.sh in default bashrc
+      ansible.builtin.blockinfile:
+        path: '{{ home_directory }}/.bashrc'
+        state: present
+        block: |
+          if [ -f ~/.config/bash.d/common.sh ]; then
+              source ~/.config/bash.d/common.sh
+          fi
+  become: false
+
 
 - name: Import sshd tasks
   import_tasks: sshd.yml
-
-- name: Create sudoers.d file for kincerb
-  copy:
-    src: 01-kincerb
-    dest: /etc/sudoers.d/01-kincerb
-    owner: root
-    group: root
-    mode: 0600
-
-- name: Create profile.d file for my shell defaults
-  copy:
-    src: 01-nucoder.sh
-    dest: /etc/profile.d/01-nucoder.sh
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Create symlinks for config files
-  become: no
-  file:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    state: link
-  loop:
-    - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
-    - { src: '{{ projects_directory }}/config-files/kitty', dest: '{{ config_directory }}/kitty' }
-    - { src: '{{ projects_directory }}/config-files/nvim', dest: '{{ config_directory }}/nvim' }
-    - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
-    - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
-    - { src: '{{ projects_directory }}/config-files/.bashrc', dest: '{{ home_directory }}/.bashrc' }
-    - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
-    - { src: '{{ projects_directory }}/config-files/.ideavimrc', dest: '{{ home_directory }}/.ideavimrc' }
-    - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
-    - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
-    - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
-    - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
-    - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
 
 - name: Import common python tasks
   import_tasks: python.yml

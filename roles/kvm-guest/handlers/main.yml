@@ -3,5 +3,5 @@
   systemd:
     name: qemu-guest-agent
     enabled: true
-    start: started
+    state: started
 ...

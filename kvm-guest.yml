@@ -1,0 +1,6 @@
+---
+- hosts: kvm_guest
+  become: true
+  roles:
+    - kvm-guest
+...

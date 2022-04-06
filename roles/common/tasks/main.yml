@@ -58,14 +58,14 @@
         - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
         - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
 
-    # - name: Add SSH public keys from config-files
-    #   ansible.posix.authorized_key:
-    #     user: kincerb
-    #     state: present
-    #     key: '{{ item }}'
-    #   with_file:
-    #     - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth1.pub'
-    #     - '{{ projects_directory }}/config-files/ssh/kincerb_gpg_auth2.pub'
+    - name: Add SSH public keys from config-files
+      ansible.posix.authorized_key:
+        user: kincerb
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - kincerb_gpg_auth1.pub
+        - kincerb_gpg_auth2.pub
 
     - name: Create symlinks for config files
       file:

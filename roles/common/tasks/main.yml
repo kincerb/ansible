@@ -94,6 +94,9 @@
           if [ -f ~/.config/bash.d/common.sh ]; then
               source ~/.config/bash.d/common.sh
           fi
+          if (which starship &>/dev/null); then
+              eval "$(starship init bash)"
+          fi
 
 - name: Import sshd tasks
   import_tasks: sshd.yml

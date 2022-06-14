@@ -12,11 +12,5 @@
     name: '{{ item }}'
   loop:
     - ansible
-    - black
-    - docformatter
-    - flake8
-    - isort
-    - jedi-language-server
-    - pylint
     - ranger-fm
 ...

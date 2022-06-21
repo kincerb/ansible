@@ -26,6 +26,7 @@
 
 - name: Import font tasks
   import_tasks: fonts.yml
+  when: ansible_facts['os_family']|lower != 'redhat'
 
 - name: Setup various config files from git repo
   block:
@@ -105,4 +106,5 @@
 
 - name: Import common python tasks
   import_tasks: python.yml
+  when: ansible_facts['os_family']|lower != 'redhat'
 ...

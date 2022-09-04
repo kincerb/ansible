@@ -2,23 +2,40 @@
 - name: Get nerd fonts and install
   become: false
   block:
+    - name: Create fonts download directory
+      ansible.builtin.file:
+        path: '{{ home_directory }}/Downloads/fonts'
+        state: directory
+
     - name: Create install directory for fonts
       ansible.builtin.file:
-        path: '{{ font_info.install_directory }}'
+        path: '{{ font_info.install_directory }}/{{ item }}'
         state: directory
         mode: 0755
+      loop: '{{ font_info.names }}'
+
+    - name: Download fonts
+      ansible.builtin.get_url:
+        url: '{{ font_info.url }}/{{ item }}.zip'
+        dest: '{{ home_directory }}/Downloads/fonts'
+      loop: '{{ font_info.names }}'
 
     - name: Download and extract fonts
       ansible.builtin.unarchive:
-        src: '{{ font_info.url }}/{{ item }}.zip'
-        dest: '{{ font_info.install_directory }}'
-        remote_src: true
+        src: '{{ home_directory }}/Downloads/fonts/{{ item }}.zip'
+        dest: '{{ font_info.install_directory }}/{{ item }}'
         mode: 0755
         exclude:
-          - "*.ttf"
+          - "*Windows Compatible*"
       loop: '{{ font_info.names }}'
 
     - name: Update font cache
       ansible.builtin.command:
         cmd: fc-cache
+
+  always:
+    - name: Remove downloaded fonts
+      ansible.builtin.file:
+        path: '{{ home_directory }}/Downloads/fonts'
+        state: absent
 ...

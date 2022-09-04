@@ -1,8 +1,8 @@
 ---
 home_directory: "{{ lookup('env', 'HOME') }}"
 font_info:
-  url: https://github.com/ryanoasis/nerd-fonts/releases/download/2.2.1
-  install_directory: "{{ home_directory }}/.local/share/fonts/NerdFonts"
+  url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.1
+  install_directory: "{{ home_directory }}/.local/share/fonts"
   names:
     - AnonymousPro
     - CascadiaCode

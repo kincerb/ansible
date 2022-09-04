@@ -1,4 +1,7 @@
 ---
+- name: Import font tasks
+  ansible.builtin.import_tasks: fonts.yml
+
 - name: Import desktop tasks for Ubuntu
   import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'

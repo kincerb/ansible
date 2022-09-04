@@ -24,10 +24,6 @@
   import_tasks: arch.yml
   when: ansible_facts['os_family']|lower == 'archlinux'
 
-- name: Import font tasks
-  import_tasks: fonts.yml
-  when: ansible_facts['os_family']|lower != 'redhat'
-
 - name: Setup various config files from git repo
   block:
     - name: Create config/bin directories in home

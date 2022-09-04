@@ -1,5 +1,7 @@
 {
+  {% if docker_data_dir is defined %}
   "data-root": "{{ docker_data_dir }}",
+  {% endif %}
   "log-driver": "journald",
   "group": "docker"
 }

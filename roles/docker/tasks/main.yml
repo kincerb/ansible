@@ -7,27 +7,19 @@
   import_tasks: arch.yml
   when: ansible_facts['os_family']|lower == 'archlinux'
 
-- name: Ensure docker is enabled
-  systemd:
-    name: docker
-    state: started
-    enabled: yes
-
 - name: Add kincerb to docker group
-  user:
+  ansible.builtin.user:
     name: kincerb
     append: yes
     groups:
       - docker
 
 - name: Add daemon.json file
-  template:
+  ansible.builtin.template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
     owner: root
     group: root
     mode: 0600
-  when: docker_data_dir is defined
   notify:
     - restart docker
-...

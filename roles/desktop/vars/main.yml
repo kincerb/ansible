@@ -1,8 +1,12 @@
 ---
 home_directory: "{{ lookup('env', 'HOME') }}"
-home_bin_directory: "{{ home_directory }}/.local/bin"
-projects_directory: "{{ home_directory }}/Projects"
-config_directory: "{{ home_directory }}/.config"
-ssh_directory: "{{ home_directory }}/.ssh"
-ssh_socket_directory: "{{ ssh_directory }}/socket"
+font_info:
+  url: https://github.com/ryanoasis/nerd-fonts/releases/download/2.2.1
+  install_directory: "{{ home_directory }}/.local/share/fonts/NerdFonts"
+  names:
+    - AnonymousPro
+    - CascadiaCode
+    - FiraCode
+    - IBMPlexMono
+    - SourceCodePro
 ...

@@ -1,5 +1,6 @@
 ---
 - name: Get nerd fonts and install
+  become: false
   block:
     - name: Create install directory for fonts
       ansible.builtin.file:
@@ -20,5 +21,4 @@
     - name: Update font cache
       ansible.builtin.command:
         cmd: fc-cache
-  become: false
 ...

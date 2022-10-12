@@ -8,6 +8,7 @@
       - nodejs
       - rsync
       - socat
+      - starship
       - the_silver_searcher
       - tmux
       - vim

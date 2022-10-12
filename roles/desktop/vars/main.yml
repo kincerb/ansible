@@ -1,7 +1,7 @@
 ---
 home_directory: "{{ lookup('env', 'HOME') }}"
 font_info:
-  url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.1
+  url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2
   install_directory: "{{ home_directory }}/.local/share/fonts"
   names:
     - AnonymousPro

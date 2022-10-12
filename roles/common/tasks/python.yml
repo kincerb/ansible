@@ -1,16 +1,42 @@
 ---
-- name: Install python packages as user
-  pip:
-    executable: pip3
-    extra_args: --user
-    name:
-      - pipx
+- name: Setup pipx and install packages
+  block:
+    - name: Install python packages as user
+      pip:
+        executable: pip3
+        extra_args: --user
+        name:
+          - pipx
 
-- name: Install packages with pipx
-  community.general.pipx:
-    install_deps: true
+    - name: Install packages with pipx
+      community.general.pipx:
+        install_deps: true
+        state: install
+        name: '{{ item }}'
+      loop:
+        - ansible
+        - black
+        - ranger-fm
+
+    - name:
+      community.general.pipx:
+        state: inject
+        name: black
+        inject_packages:
+          - mypy
+          - docformatter
+          - isort
+          - flake8
+
+- name: Create venv for neovim
+  ansible.builtin.pip:
     name: '{{ item }}'
+    virtualenv: ~/.local/venvs/neovim
+    virtualenv_command: python3 -m venv
+    state: latest
   loop:
-    - ansible
-    - ranger-fm
+    - pynvim
+    - jedi-language-server
+    - pip
+
 ...

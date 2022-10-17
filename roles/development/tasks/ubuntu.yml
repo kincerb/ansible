@@ -2,9 +2,9 @@
 - name: Install development packages
   apt:
     package:
-      - build-essential 
-      - checkinstall 
-      - libreadline-gplv2-dev 
+      - build-essential
+      - checkinstall
+      - libreadline-gplv2-dev
       - libncursesw5-dev
       - libssl-dev
       - libsqlite3-dev

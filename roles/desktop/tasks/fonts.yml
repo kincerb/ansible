@@ -20,13 +20,12 @@
         dest: '{{ home_directory }}/Downloads/fonts'
       loop: '{{ font_info.names }}'
 
-    - name: Download and extract fonts
+    # TODO: fix to unarchive from remote source, currently expects the zip to be on controller
+    - name: Extract fonts
       ansible.builtin.unarchive:
         src: '{{ home_directory }}/Downloads/fonts/{{ item }}.zip'
         dest: '{{ font_info.install_directory }}/{{ item }}'
         mode: 0755
-        exclude:
-          - "*Windows Compatible*"
       loop: '{{ font_info.names }}'
 
     - name: Update font cache

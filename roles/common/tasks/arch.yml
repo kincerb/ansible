@@ -6,6 +6,7 @@
       - bat
       - neovim
       - nodejs
+      - npm
       - rsync
       - socat
       - starship
@@ -15,4 +16,12 @@
       - xsel
     state: present
     update_cache: yes
+  register: packages_installed
+
+- name: Create link to bat from batcat
+  file:
+    src: /usr/bin/bat
+    dest: /usr/bin/batcat
+    state: link
+  when: "{{ packages_installed|selectattr('packages', 'contains', 'bat') }}"
 ...

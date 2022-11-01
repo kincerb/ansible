@@ -33,6 +33,7 @@
       //file-server.lan/isos /net/isos cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
       //file-server.lan/google /net/google cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
       //plex.lan/plex /net/plex cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
-
+  notify:
+    - reload daemon
 ...
 

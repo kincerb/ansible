@@ -79,12 +79,10 @@ map kitty_mod+minus change_font_size all -1.0
 map kitty_mod+0 change_font_size all 0
 map kitty_mod+right set_background_opacity +0.1
 map kitty_mod+left set_background_opacity -0.1
-
-{% if ansible_facts["os_family"]|lower eq "darwin" %}
+{% if ansible_facts["os_family"]|lower == "darwin" %}
 macos_quit_when_last_window_closed yes
 macos_thicken_font 0.50
 {% endif %}
 {% raw -%}
     # vim: ft=kitty
 {% endraw %}
-# vim: ft=jinja2

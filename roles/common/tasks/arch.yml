@@ -19,6 +19,7 @@
   register: packages_installed
 
 - name: Create link to bat from batcat
+  become: true
   file:
     src: /usr/bin/bat
     dest: /usr/bin/batcat

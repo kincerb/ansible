@@ -36,7 +36,5 @@
     state: latest
   loop:
     - pynvim
-    - jedi-language-server
     - pip
-
 ...

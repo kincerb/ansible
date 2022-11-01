@@ -7,6 +7,7 @@
       - neovim
       - nodejs
       - npm
+      - python-pip
       - rsync
       - socat
       - starship
@@ -24,5 +25,5 @@
     src: /usr/bin/bat
     dest: /usr/bin/batcat
     state: link
-  when: "{{ packages_installed|selectattr('packages', 'contains', 'bat') }}"
+  when: "'bat' in packages_installed.packages"
 ...

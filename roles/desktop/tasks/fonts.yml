@@ -20,11 +20,11 @@
         dest: '{{ home_directory }}/Downloads/fonts'
       loop: '{{ font_info.names }}'
 
-    # TODO: fix to unarchive from remote source, currently expects the zip to be on controller
     - name: Extract fonts
       ansible.builtin.unarchive:
         src: '{{ home_directory }}/Downloads/fonts/{{ item }}.zip'
         dest: '{{ font_info.install_directory }}/{{ item }}'
+        remote_src: yes
         mode: 0755
       loop: '{{ font_info.names }}'
 

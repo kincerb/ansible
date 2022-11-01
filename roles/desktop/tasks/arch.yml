@@ -1,21 +1,30 @@
 ---
-- name: Install common desktop packages
-  become: true
-  community.general.pacman:
-    name:
-      - google-chrome-dev
-      - kitty
-      - kitty-shell-integration
-      - kitty-terminfo
-    state: present
-    update_cache: yes
+- name: Install and configure desktop packages
+  block:
+    - name: Install common desktop packages
+      become: true
+      community.general.pacman:
+        name:
+          - google-chrome-dev
+          - kitty
+          - kitty-shell-integration
+          - kitty-terminfo
+        state: present
+        update_cache: yes
 
-- name: Configure kitty
-  become: false
-  ansible.builtin.template:
-    src: templates/kitty.conf.j2
-    dest: "{{ home_directory }}/.config/kitty/kitty.conf"
-    mode: "0640"
-    force: yes
-    backup: yes
+    - name: Create kitty config directory
+      become: false
+      ansible.builtin.file:
+        path: "{{ home_directory }}/.config/kitty"
+        state: directory
+        mode: 0750
+
+    - name: Configure kitty
+      become: false
+      ansible.builtin.template:
+        src: templates/kitty.conf.j2
+        dest: "{{ home_directory }}/.config/kitty/kitty.conf"
+        mode: 0640
+        force: yes
+        backup: yes
 ...

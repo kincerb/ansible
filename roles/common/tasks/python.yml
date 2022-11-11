@@ -18,7 +18,7 @@
         - black
         - ranger-fm
 
-    - name:
+    - name: Inject other tools into black venv
       community.general.pipx:
         state: inject
         name: black
@@ -27,6 +27,13 @@
           - docformatter
           - isort
           - flake8
+
+    - name: Inject pillow into ranger-fm venv
+      community.general.pipx:
+        state: inject
+        name: ranger-fm
+        inject_packages:
+          - pillow
 
 - name: Create venv for neovim
   ansible.builtin.pip:

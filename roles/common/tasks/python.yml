@@ -41,7 +41,7 @@
         name: ansible
         inject_packages:
           - docker
-          - winrm
+          - pywinrm
 
 - name: Create venv for neovim
   ansible.builtin.pip:

@@ -35,6 +35,14 @@
         inject_packages:
           - pillow
 
+    - name: Inject docker and winrm into ansible venv
+      community.general.pipx:
+        state: inject
+        name: ansible
+        inject_packages:
+          - docker
+          - winrm
+
 - name: Create venv for neovim
   ansible.builtin.pip:
     name: '{{ item }}'

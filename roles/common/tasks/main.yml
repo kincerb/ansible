@@ -38,7 +38,6 @@
         - { path: '{{ ssh_socket_directory }}', mode: '0750' }
         - { path: '{{ projects_directory }}', mode: '0750' }
         - { path: '{{ home_directory }}', mode: '0750' }
-        - { path: '{{ home_directory }}/.vim', mode: '0750' }
 
     - name: Clone config-files to setup shell
       git:
@@ -71,16 +70,13 @@
         state: link
       loop:
         - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
-        - { src: '{{ projects_directory}}/config-files/nvim', dest: '{{ config_directory }}/nvim' }
         - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
         - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
         - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
-        - { src: '{{ projects_directory }}/config-files/.ideavimrc', dest: '{{ home_directory }}/.ideavimrc' }
         - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
         - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
         - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
         - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
-        - { src: '{{ projects_directory }}/config-files/vim/coc-settings.json', dest: '{{ home_directory }}/.vim/coc-settings.json' }
         - { src: '{{ projects_directory }}/config-files/starship.toml', dest: '{{ config_directory }}/starship.toml' }
 
     - name: Source common.sh in default bashrc

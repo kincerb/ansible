@@ -1,0 +1,62 @@
+{
+  "hover.floatConfig": {
+    "rounded": true
+  },
+  "coc.preferences.willSaveHandlerTimeout": 1500,
+  "codeLens.enable": true,
+  "snippets.loadFromExtensions": true,
+  "suggest.maxCompleteItemCount": 20,
+  "coc.preferences.formatOnSave": true,
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveTimeout": 1500,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "git.addGBlameToVirtualText": true,
+  "git.enableGutters": true,
+  "git.addedSign.hlGroup": "GitGutterAdd",
+  "git.changedSign.hlGroup": "GitGutterChange",
+  "git.removedSign.hlGroup": "GitGutterDelete",
+  "sh.enable": true,
+  "snippets.ultisnips.pythonPrompt": false,
+  "markdownlint.config": {
+    "MD004": {
+      "style": "sublist"
+    },
+    "MD013": {
+      "line_length": 120,
+      "code_blocks": false
+    },
+    "MD033": false,
+    "MD041": false
+  },
+  "pylsp.enable": true,
+  "pylsp.trace.server": "off",
+  "pylsp.builtin.enableInstallPythonLspBlack": false,
+  "pylsp.builtin.pythonPath": "{{ venvs_directory }}/neovim/bin/python3",
+  "pylsp.commandPath": "{{ venvs_directory }}/neovim/bin/pylsp",
+  "pylsp.plugins.autopep8.enabled": false,
+  "pylsp.plugins.yapf.enabled": false,
+  "pylsp.plugins.flake8.enabled": false,
+  "pylsp.plugins.pycodestyle.enabled": false,
+  "pylsp.plugins.pyflakes.enabled": false,
+  "pylsp.plugins.mccabe.enabled": false,
+  "pylsp.plugins.ruff.enabled": false,
+  "pylsp.plugins.flake8.ignore": [
+    "F401",
+    "F403",
+    "F405",
+    "E501"
+  ],
+  "ruff.enable": true,
+  "ruff.path": [
+    "{{ venvs_directory }}/neovim/bin/ruff"
+  ],
+  "ruff.builtin.pythonPath": "{{ venvs_directory }}/neovim/bin/python3",
+  "ruff.serverPath": "{{ venvs_directory }}/neovim/bin/ruff-lsp",
+  "ruff.autoFixOnSave": true,
+  "ruff.fixAll": true,
+  "ruff.organizeImports": true,
+  "ruff.interpreter": [
+    "{{ venvs_directory }}/neovim/bin/python3"
+  ]
+}
+{# vim: set ft=jinja2: #}# vim: set ft=json

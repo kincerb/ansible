@@ -6,4 +6,22 @@
 - name: Import development tasks for RHEL
   import_tasks: redhat.yml
   when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: Create venv for neovim
+  ansible.builtin.pip:
+    name: '{{ item }}'
+    virtualenv: '{{ venvs_directory }}/neovim'
+    virtualenv_command: python3 -m venv
+    state: latest
+  loop:
+    - pynvim
+    - pip
+    - isort
+    - mypy
+    - mypy-extensions
+    - django-stubs
+    - django-stubs-ext
+    - python-lsp-server
+    - python-lsp-black
+    - ruff-lsp
 ...

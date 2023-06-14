@@ -1,6 +1,6 @@
 "  Plugins
 " ---------
-call plug#begin('{{ home_directory }}/.local/share/nvim/plugged')
+call plug#begin('{{ share_directory }}/nvim/plugged')
 Plug 'rafi/awesome-vim-colorschemes'
 " plugins that provide or manage splits
 Plug 'preservim/nerdtree'
@@ -31,7 +31,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 " find all the things
-Plug 'junegunn/fzf', { 'dir': '{{ home_directory }}/.local/fzf', 'do': './install --all --no-update-rc' }
+Plug 'junegunn/fzf', { 'dir': '{{ local_directory }}/fzf', 'do': './install --all --no-update-rc' }
 Plug 'junegunn/fzf.vim'
 " code completion / navigation
 Plug 'andymass/vim-matchup'
@@ -53,7 +53,7 @@ set termguicolors
 colorscheme jellybeans
 
 " add fzf to vim runtimepath
-set rtp+={{ home_directory }}/.local/fzf
+set rtp+={{ local_directory }}/fzf
 set rtp+={{ venvs_directory }}/neovim
 let g:python3_host_prog = '{{ venvs_directory }}/neovim/bin/python3'
 

@@ -1,4 +1,16 @@
 ---
+- hosts: all
+  vars:
+    home_directory: "{{ ansible_facts['env']['HOME'] }}"
+    local_directory: '{{ home_directory }}/.local'
+    home_bin_directory: '{{ local_directory }}/bin'
+    venvs_directory: '{{ local_directory }}/venvs'
+    share_directory: '{{ local_directory }}/share'
+    projects_directory: '{{ home_directory }}/Projects'
+    config_directory: '{{ home_directory }}/.config'
+    ssh_directory: '{{ home_directory }}/.ssh'
+    ssh_socket_directory: '{{ ssh_directory }}/socket'
+
 - import_playbook: common.yml
 - import_playbook: docker.yml
 - import_playbook: kvm.yml

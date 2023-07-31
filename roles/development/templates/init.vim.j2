@@ -2,11 +2,9 @@
 " ---------
 call plug#begin('{{ share_directory }}/nvim/plugged')
 Plug 'rafi/awesome-vim-colorschemes'
-" plugins that provide or manage splits
-Plug 'preservim/nerdtree'
-Plug 'kincerb/nerdtree-git-plugin'
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'nvim-tree/nvim-web-devicons'
 " file icons
-Plug 'ryanoasis/vim-devicons'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-peekaboo' " displays split with all registers
 " statusline
@@ -14,8 +12,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " plugins for git
 Plug 'tpope/vim-fugitive'
-" Plug 'airblade/vim-gitgutter'
-" Plug 'lewis6991/gitsigns.nvim' " alt to gitgutter
 " autocomplete
 Plug 'neovim/nvim-lspconfig'
 Plug 'neoclide/coc.nvim' , { 'branch' : 'release'  }
@@ -38,40 +34,51 @@ Plug 'andymass/vim-matchup'
 Plug 'jiangmiao/auto-pairs' " basic auto-close
 Plug 'tpope/vim-endwise' " auto-close for shells, ruby
 Plug 'alvan/vim-closetag' " auto-close html
+Plug 'pearofducks/ansible-vim', { 'do': './UltiSnips/generate.sh' } " ansible syntax
 " syntax highlighting for kitty conf files
 Plug 'fladson/vim-kitty'
 
 " general UI stuff
 Plug 'rcarriga/nvim-notify'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 filetype plugin indent on
 syntax enable
 
-set background=dark
-set termguicolors
-colorscheme jellybeans
-
 " add fzf to vim runtimepath
 set rtp+={{ local_directory }}/fzf
 set rtp+={{ venvs_directory }}/neovim
 let g:python3_host_prog = '{{ venvs_directory }}/neovim/bin/python3'
+set background=dark
+set termguicolors
+set cursorline
+set cursorlineopt=number
+set guifont=FantasqueSansM\ Nerd\ Font:h12
+set colorcolumn=88
+
+colorscheme jellybeans
 
 " Highlight colors for matchpairs
 hi Normal guibg=NONE ctermbg=NONE
-hi Folded guifg=#000000 guibg=#616161
+hi Folded guibg=#111117 guifg=#45615c
 hi EndOfBuffer guibg=NONE ctermbg=NONE
-hi Whitespace guibg=#a9b0ab ctermbg=NONE
+hi Whitespace guibg=#111117 guifg=#de9b95 ctermbg=NONE
 hi LineNr guibg=NONE ctermbg=NONE guifg=#89858c
-hi CursorLineNr guibg=#89858c ctermbg=NONE guifg=#d5d4d6
-hi ColorColumn guibg=NONE
-hi CursorLine gui=underline cterm=underline
+hi CursorLineNr guibg=NONE ctermbg=NONE guifg=#1fcc4a
+hi ColorColumn guifg=NONE guibg=#111117
+hi CursorLine gui=underline cterm=underline guifg=NONE guibg=NONE
 hi VertSplit guibg=#959ea1 guifg=#005f87
 hi SignColumn guibg=NONE ctermbg=NONE
 hi MatchParen guibg=#b3b0b5 guifg=#9805ed
-hi CocMenuSel guibg=#bdbfa3 guifg=#346b69 gui=bold
 hi Visual guibg=#346b69 guifg=#f5f2f0
-" autocmd ColorScheme * hi CocMenuSel guifg=#243e4f gui=nocombine
+" Colors for diffs
+hi DiffAdd guibg=#447856
+hi DiffChange guibg=#446778
+hi DiffDelete guibg=#784744
+hi DiffText guibg=#676d8f guifg=#2e2e30
+" Colors for plugins
+hi CocMenuSel guibg=#bdbfa3 guifg=#346b69 gui=bold
 hi IndentBlanklineIndent1 guifg=#f0dbc7 gui=nocombine
 hi IndentBlanklineIndent2 guifg=#e6a1a1 gui=nocombine
 hi IndentBlanklineIndent3 guifg=#a9d6a5 gui=nocombine
@@ -84,11 +91,10 @@ hi GitGutterDelete guibg=NONE guifg=#de9b95 gui=nocombine
 
 "------- Autocommands  --------"
 autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " autocmd VimEnter * wincmd p
 autocmd CompleteDone * if !pumvisible() | pclose | endif
 autocmd BufNewFile,BufRead *Jenkinsfile :set filetype=groovy
-autocmd BufNewFile,BufRead *.yml :set filetype=yaml.ansible " create function or script to inspect first line
+" autocmd BufNewFile,BufRead *.yml :set filetype=yaml.ansible " create function or script to inspect first line
 autocmd FileType * AnyFoldActivate
 autocmd FileType javascript setlocal commentstring=/*%s*/
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -122,8 +128,6 @@ set completeopt+=noselect  " force user selection
 set completeopt-=longest   " don't insert the longest common text
 set belloff+=ctrlg         " disable beep during completion
 
-set cursorline
-set cursorlineopt=number
 set noswapfile
 set directory={{ share_directory }}/nvim/tmp
 set undodir={{ share_directory }}/nvim/undodir
@@ -131,11 +135,10 @@ set undofile
 set nobackup
 set diffopt=vertical,filler
 set nowritebackup
-set colorcolumn=120
 set updatetime=300
 set shortmess+=c
 set signcolumn=auto
-set scrolloff=16
+set scrolloff=999
 set showmatch
 set number
 set relativenumber
@@ -161,7 +164,7 @@ set laststatus=2
 set showtabline=2
 set foldlevel=99 " start with all folds opened
 " display extra whitespace
-set listchars=tab:⟪⋯⟫,trail:●,nbsp:●
+set list listchars=tab:⟪⋯⟫,trail:,nbsp:●
 
 "------- Builtin variables --------"
 let g:netrw_keepdir=0
@@ -169,13 +172,30 @@ let g:netrw_winsize=30
 let g:netrw_banner=0
 
 "------- Plugin variables --------"
+let g:ansible_unindent_after_newline=1
+let g:ansible_name_highlight='d'
+let g:ansible_attribute_highlight='od'
+let g:ansible_extra_keywords_hightlight=1
+
+let g:ansible_template_syntaxes = {
+    \ '*.vim.j2': 'vim',
+    \ '*.toml.j2': 'toml',
+    \ '*.json.j2': 'json',
+    \ '*smb.conf.j2': 'samba',
+    \ '*.py.j2': 'python'}
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:airline_symbols.dirty=' '
+let g:airline_symbols.notexists=' '
+let g:airline_symbols.whitespace='󱪶 '
+
 let g:airline_powerline_fonts=1
 let g:airline_highlighting_cache=1
 let g:airline_skip_empty_sections=1
 let g:airline_exclude_preview = 0
-" Need to set these after the dictionary has been created
-" let g:airline_symbols.dirty=' '
-" let g:airline_symbols.notexists=' '
 let g:airline_theme='molokai'
 let g:airline#extensions#coc#enabled=1
 let g:airline#extensions#coc#show_coc_status=1
@@ -184,8 +204,8 @@ let g:airline#extensions#tabline#formatter='unique_tail_improved'
 let g:airline#extensions#tabline#tab_nr_type = 2 " splits and tab number
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline#extensions#tabline#ignore_bufadd_pat='nerd_tree|tagbar|buffhidden|quickfix|hidden'
-let airline#extensions#coc#error_symbol='󰅝'
-let airline#extensions#coc#warning_symbol=''
+let airline#extensions#coc#error_symbol='  '
+let airline#extensions#coc#warning_symbol='  '
 
 let g:anyfold_fold_display=0
 let g:anyfold_fold_comments=2
@@ -195,12 +215,11 @@ let g:anyfold_motion=1
 let g:indentLine_setConceal=1 " set to 0 to disable plugin overriding conceal options
 let g:indentLine_fileTypeExclude = ['markdown']
 
-let g:NERDTreeGitStatusConcealBrackets=0
-let NERDTreeIgnore=['\.pyc$', '\~$', '\.swp$', '\.ropeproject$', '\.git$', '\.idea$']
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-let NERDTreeWinSize=32
-let NERDTreeHijackNetrw=1
+let g:WebDevIconsUnicodeDecorateFolderNodes=1
+let g:DevIconsEnableFoldersOpenClose=1
+
+let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol=' '
+let g:DevIconsDefaultFolderOpenSymbol=' '
 
 let python_highlight_all=1
 let g:rainbow_active=1
@@ -216,8 +235,8 @@ let g:coc_disable_startup_warning = 1
 
 let g:coc_global_extensions = [ '@yaegassy/coc-pylsp', '@yaegassy/coc-ruff', 'coc-htmldjango', '@yaegassy/coc-ansible',
     \ 'coc-json', 'coc-yaml', 'coc-html', 'coc-docker',
-    \ 'coc-css', 'coc-markdownlint', 'coc-git',
-    \ 'coc-sh', 'coc-go', 'coc-vimlsp',
+    \ 'coc-css', 'coc-markdownlint', 'coc-git', 'coc-fzf-preview',
+    \ 'coc-sh', 'coc-go', 'coc-vimlsp', 'coc-pydocstring',
     \ 'coc-snippets', 'coc-marketplace', 'coc-highlight',
     \ 'https://github.com/andys8/vscode-jest-snippets']
 
@@ -239,8 +258,8 @@ let g:indent_blankline_buftype_exclude = [
 "------- Keymaps --------"
 nnoremap <expr> <CR> &diff ? ']c' : ':noh'
 nnoremap <expr> <leader>x ':tabclose<CR>'
-nnoremap <leader><leader> za
-nnoremap <leader>z zA
+nnoremap <leader><leader> zA
+nnoremap <leader>z za
 inoremap jk <ESC>
 inoremap <C-o> <ESC>o<ESC>
 " use very magic mode by default for searching
@@ -278,11 +297,13 @@ nnoremap [c <Plug>(coc-git-prevchunk)
 nnoremap ]c <Plug>(coc-git-nextchunk)
 nnoremap [cc <Plug>(coc-git-prevconflict)
 nnoremap ]cc <Plug>(coc-git-nextconflict)
-nnoremap gs <Plug>(coc-git-chunkinfo)
-nnoremap gc <Plug>(coc-git-commit)
+nnoremap <leader>gc <Plug>(coc-git-chunkinfo)
+nnoremap <leader>gcc <Plug>(coc-git-commit)
 nnoremap <expr> <leader>gb ToggleBlames()
 nnoremap <leader>go :CocCommand git.browserOpen<CR>
 nnoremap <leader>gO :CocCommand git.copyUrl<CR>
+vnoremap <leader>go :CocCommand git.browserOpen<CR>
+vnoremap <leader>gO :CocCommand git.copyUrl<CR>
 nnoremap <leader>gl :0Gclog<CR>
 vmap <leader>gl :Gclog<CR>
 nnoremap <leader>gf :Gdiffsplit!<CR>
@@ -290,8 +311,6 @@ nnoremap <expr> <leader>ga WriteAndAdd()
 nnoremap <leader>gR :Git rebase --continue<CR>
 nnoremap <leader>gP :silent Git push<CR>
 nnoremap <leader><C-n> :TagbarToggle<CR>
-nnoremap <leader>n :NERDTreeMirror<CR>:NERDTreeFocus<CR>
-nnoremap <leader>N :NERDTreeClose<CR>
 
 nnoremap <F5> :UndotreeToggle<CR>
 " ------- FZF mappings ----------- "
@@ -424,20 +443,10 @@ function! CheckBackSpace() abort
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Update to take filter argument
-function! PasteIntoTermBuffer(term_type) range
-    let term_buffer_num = bufnr(a:term_type)
-    if term_buffer_num == -1
-        return
-    endif
-    " call term_sendkeys(term_buffer_num, "\<C-R>\<C-W>")
-endfunction
-
 function! SetShortTabs()
     setlocal shiftwidth=2
     setlocal tabstop=2
     setlocal softtabstop=2
-    " setlocal conceallevel=0
 endfunction
 
 function! SetMarkdownOptions()
@@ -447,34 +456,9 @@ endfunction
 
 function! SetPythonOptions()
     let b:AutoPairs = AutoPairsDefine({"f'" : "'", "r'" : "'", "b'" : "'"})
-    setlocal formatprg={{ venvs_directory }}/neovim/bin/black\ --quiet
     setlocal fileformat=unix fixeol
     iabbrev <buffer> ifmain if __name__ == "__main__":<cr><tab>main()<cr><esc>
 endfunction
-
-function! NERDTreeHighlightFile(extension, guifg, guibg)
-    exec 'autocmd FileType nerdtree highlight ' . a:extension .' guibg='. a:guibg .' guifg='. a:guifg
-    exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-" call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
-" call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-" call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-" call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-" call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-" call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-" call NERDTreeHighlightFile('json', 'yellow', 'none')
-" call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-" call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-" call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-" call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-" call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-" call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
-" call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
-" call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
-" call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
-" call NERDTreeHighlightFile('bashrc', '#686868', 'none')
-" call NERDTreeHighlightFile('bashprofile', '#686868', 'none')
 
 augroup Markdown
     autocmd!
@@ -497,7 +481,5 @@ augroup Python
 augroup END
 
 if exists('g:loaded_webdevicons')
-    let g:webdevicons_conceal_nerdtree_brackets=1
     call webdevicons#refresh()
 endif
-{# vim: set ft=jinja2: #}# vim: set ft=vim

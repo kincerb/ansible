@@ -48,3 +48,7 @@ max-complexity = 10
 
 [tool.ruff.flake8-quotes]
 inline-quotes = "double"
+
+[tool.pylsp-mypy]
+enabled = true
+live_mode = true

@@ -30,3 +30,11 @@ endsnippet
 snippet "# ty" "# type: ignore..." w
  # type: ${1:ignore}[${2:import}]$0
 endsnippet
+
+snippet myp "# mypy: ignore" b
+# mypy: ${1:disable-error-code}="${2:import}"$0
+endsnippet
+
+snippet ruf "# ruff: noqa" b
+# ruff: noqa: ${1:F811}$0
+endsnippet

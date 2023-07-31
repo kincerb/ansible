@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Set variables commonly used on all hosts
+  hosts: all
   vars:
     home_directory: "{{ ansible_facts['env']['HOME'] }}"
     local_directory: '{{ home_directory }}/.local'
@@ -11,13 +12,30 @@
     ssh_directory: '{{ home_directory }}/.ssh'
     ssh_socket_directory: '{{ ssh_directory }}/socket'
 
-- import_playbook: common.yml
-- import_playbook: docker.yml
-- import_playbook: kvm.yml
-- import_playbook: kvm-guest.yml
-- import_playbook: development.yml
-- import_playbook: desktop.yml
-- import_playbook: samba.yml
-- import_playbook: samba-client.yml
-- import_playbook: wireguard.yml
+- name: Import common playbook
+  import_playbook: common.yml
+
+- name: Import docker playbook
+  import_playbook: docker.yml
+
+- name: Import kvm playbook
+  import_playbook: kvm.yml
+
+- name: Import kvm-guest playbook
+  import_playbook: kvm-guest.yml
+
+- name: Import development playbook
+  import_playbook: development.yml
+
+- name: Import desktop playbook
+  import_playbook: desktop.yml
+
+- name: Import samba playbook
+  import_playbook: samba.yml
+
+- name: Import samba-client playbook
+  import_playbook: samba-client.yml
+
+- name: Import wireguard playbook
+  import_playbook: wireguard.yml
 ...

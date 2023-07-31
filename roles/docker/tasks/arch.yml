@@ -1,9 +1,9 @@
 ---
 - name: Install common packages
-  pacman:
+  community.general.pacman:
     name:
       - docker
       - minikube
     state: present
-    update_cache: yes
+    update_cache: true
 ...

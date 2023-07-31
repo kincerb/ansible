@@ -17,8 +17,6 @@
     - pynvim
     - pip
     - isort
-    - mypy
-    - mypy-extensions
     - python-lsp-server
     - python-lsp-black
     - pylsp-mypy

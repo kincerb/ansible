@@ -1,0 +1,8 @@
+---
+- name: Install samba client packages
+  community.general.pacman:
+    name:
+      - samba-support
+    state: present
+    update_cache: true
+...

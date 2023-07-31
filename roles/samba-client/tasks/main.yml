@@ -1,13 +1,17 @@
 ---
 - name: Import samba client tasks for ubuntu
-  import_tasks: ubuntu.yml
+  ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
+- name: Import samba client tasks for arch
+  ansible.builtin.import_tasks: arch.yml
+  when: ansible_facts['os_family']|lower == 'archlinux'
+
 - name: Create mount directories
-  file:
+  ansible.builtin.file:
     path: '{{ item }}'
     state: directory
-    mode: 0750
+    mode: '750'
     owner: kincerb
     group: kincerb
   loop:
@@ -17,23 +21,22 @@
     - /etc/secrets
 
 - name: Copy samba credentials file
-  copy:
+  ansible.builtin.copy:
     src: credentials
     dest: /etc/secrets/samba.credentials
     owner: kincerb
     group: kincerb
-    mode: 0600
+    mode: '600'
 
 - name: Add mounts from file-server
   ansible.builtin.blockinfile:
     path: /etc/fstab
-    backup: yes
+    backup: true
     state: present
     block: |
       //file-server.lan/isos /net/isos cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
       //file-server.lan/google /net/google cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
       //plex.lan/plex /net/plex cifs credentials=/etc/secrets/samba.credentials,user,uid=1000,gid=1000,iocharset=utf8,noauto,exec,x-gvfs-show 0 0
   notify:
-    - reload daemon
+    - Reload Systemd
 ...
-

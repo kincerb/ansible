@@ -1,7 +1,7 @@
 ---
 - name: Install samba client packages
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
     package:
       - cifs-utils
 ...

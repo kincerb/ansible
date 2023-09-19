@@ -1,6 +1,6 @@
 ---
 - name: Install development packages
-  apt:
+  ansible.builtin.apt:
     package:
       - build-essential
       - checkinstall

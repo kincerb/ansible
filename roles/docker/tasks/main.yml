@@ -1,16 +1,16 @@
 ---
 - name: Setup and install docker on ubuntu
-  import_tasks: ubuntu.yml
+  ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Setup and install docker on Arch
-  import_tasks: arch.yml
+  ansible.builtin.import_tasks: arch.yml
   when: ansible_facts['os_family']|lower == 'archlinux'
 
 - name: Add kincerb to docker group
   ansible.builtin.user:
     name: kincerb
-    append: yes
+    append: true
     groups:
       - docker
 
@@ -20,6 +20,6 @@
     dest: /etc/docker/daemon.json
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
   notify:
     - restart docker

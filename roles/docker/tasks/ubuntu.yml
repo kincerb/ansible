@@ -1,7 +1,7 @@
 ---
 - name: Setup docker repo and install packages
   block:
-    - name: Download gpg key from docker
+    - name: Download gpg key from docker # noqa risky-file-permissions
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/trusted.gpg.d/docker.asc

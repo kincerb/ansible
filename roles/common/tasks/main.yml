@@ -1,33 +1,33 @@
 ---
 - name: Create sudoers.d file for kincerb
   become: true
-  copy:
+  ansible.builtin.copy:
     src: 01-kincerb
     dest: /etc/sudoers.d/01-kincerb
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
 
 - name: Import common tasks for ubuntu
-  import_tasks: ubuntu.yml
+  ansbile.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Import common tasks for RHEL
-  import_tasks: redhat.yml
+  ansbile.builtin.import_tasks: redhat.yml
   when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: Import common tasks for Suse
-  import_tasks: suse.yml
+  ansbile.builtin.import_tasks: suse.yml
   when: ansible_facts['os_family']|lower == 'suse'
 
 - name: Import common tasks for Arch
-  import_tasks: arch.yml
+  ansbile.builtin.import_tasks: arch.yml
   when: ansible_facts['os_family']|lower == 'archlinux'
 
 - name: Setup various config files from git repo
   block:
     - name: Create config/bin directories in home
-      file:
+      ansbile.builtin.file:
         path: '{{ item.path }}'
         state: directory
         mode: '{{ item.mode }}'
@@ -40,13 +40,13 @@
         - { path: '{{ home_directory }}', mode: '0750' }
 
     - name: Clone config-files to setup shell
-      git:
+      ansbile.builtin.git:
         repo: 'https://github.com/kincerb/config-files.git'
         dest: '{{ projects_directory }}/config-files'
         version: master
 
     - name: Set permissions for executables in config-files
-      file:
+      ansbile.builtin.file:
         path: '{{ item }}'
         mode: '0750'
       loop:
@@ -64,7 +64,7 @@
         - kincerb_gpg_auth2.pub
 
     - name: Create symlinks for config files
-      file:
+      ansible.builtin.file:
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
         state: link
@@ -93,9 +93,10 @@
           [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 - name: Import sshd tasks
-  import_tasks: sshd.yml
+  ansible.builtin.import_tasks: sshd.yml
 
 - name: Import common python tasks
-  import_tasks: python.yml
+  ansible.builtin.import_tasks: python.yml
   when: ansible_facts['os_family']|lower != 'redhat'
 ...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

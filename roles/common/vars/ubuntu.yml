@@ -1,0 +1,36 @@
+---
+common_packages:
+  - apt-transport-https
+  - bat
+  - ca-certificates
+  - curl
+  - dialog
+  - dosfstools
+  - dpkg
+  - e2fsprogs
+  - findutils
+  - git
+  - gnupg
+  - gnupg-utils
+  - gzip
+  - iftop
+  - jq
+  - lz4
+  - pinentry-curses
+  - pylint
+  - python3-pip
+  - python3-venv
+  - readline-common
+  - rsync
+  - silversearcher-ag
+  - socat
+  - software-properties-common
+  - sysfsutils
+  - tmux
+  - unzip
+  - util-linux
+  - vim
+  - xsel
+  - xz-utils
+...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

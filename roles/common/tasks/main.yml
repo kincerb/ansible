@@ -10,6 +10,7 @@
 
 - name: Import common tasks for ubuntu
   ansbile.builtin.import_tasks: ubuntu.yml
+  vars_files: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Import common tasks for RHEL

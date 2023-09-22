@@ -93,3 +93,4 @@ coverage.xml
 .idea/
 scratch*
 tags
+/.env*

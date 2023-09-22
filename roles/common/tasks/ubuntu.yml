@@ -1,49 +1,19 @@
 ---
 - name: Install common packages
   become: true
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
     package:
-      - apt-transport-https
-      - bat
-      - ca-certificates
-      - curl
-      - dialog
-      - dosfstools
-      - dpkg
-      - e2fsprogs
-      - findutils
-      - git
-      - gnupg
-      - gnupg-utils
-      - gzip
-      - iftop
-      - jq
-      - lz4
-      - pinentry-curses
-      - pylint
-      - python3-pip
-      - python3-venv
-      - readline-common
-      - rsync
-      - silversearcher-ag
-      - socat
-      - software-properties-common
-      - sysfsutils
-      - tmux
-      - unzip
-      - util-linux
-      - vim
-      - xsel
-      - xz-utils
+      name: "{{ common_packages }}"
 
 - name: Get nodejs stat
-  stat:
+  ansible.builtin.stat:
     path: /usr/bin/node
   register: node_stat
   ignore_errors: true
 
 - name: Install nodejs
-  import_tasks: node.yml
+  ansible.builtin.import_tasks: node.yml
   when: node_stat.stat
 ...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

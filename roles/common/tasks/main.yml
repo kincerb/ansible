@@ -1,103 +1,15 @@
 ---
-- name: Create sudoers.d file for kincerb
-  become: true
-  ansible.builtin.copy:
-    src: 01-kincerb
-    dest: /etc/sudoers.d/01-kincerb
-    owner: root
-    group: root
-    mode: '0600'
+- name: Setup authentication
+  ansible.builtin.import_tasks: auth.yml
+  tags:
+    - auth
+    - ssh
+    - never
 
-- name: Import common tasks for ubuntu
-  ansbile.builtin.import_tasks: ubuntu.yml
-  vars_files: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'debian'
-
-- name: Import common tasks for RHEL
-  ansbile.builtin.import_tasks: redhat.yml
-  when: ansible_facts['os_family']|lower == 'redhat'
-
-- name: Import common tasks for Suse
-  ansbile.builtin.import_tasks: suse.yml
-  when: ansible_facts['os_family']|lower == 'suse'
-
-- name: Import common tasks for Arch
-  ansbile.builtin.import_tasks: arch.yml
-  when: ansible_facts['os_family']|lower == 'archlinux'
-
-- name: Setup various config files from git repo
-  block:
-    - name: Create config/bin directories in home
-      ansbile.builtin.file:
-        path: '{{ item.path }}'
-        state: directory
-        mode: '{{ item.mode }}'
-      loop:
-        - { path: '{{ config_directory }}', mode: '0750' }
-        - { path: '{{ home_bin_directory }}', mode: '0750' }
-        - { path: '{{ ssh_directory }}', mode: '0750' }
-        - { path: '{{ ssh_socket_directory }}', mode: '0750' }
-        - { path: '{{ projects_directory }}', mode: '0750' }
-        - { path: '{{ home_directory }}', mode: '0750' }
-
-    - name: Clone config-files to setup shell
-      ansbile.builtin.git:
-        repo: 'https://github.com/kincerb/config-files.git'
-        dest: '{{ projects_directory }}/config-files'
-        version: master
-
-    - name: Set permissions for executables in config-files
-      ansbile.builtin.file:
-        path: '{{ item }}'
-        mode: '0750'
-      loop:
-        - '{{ projects_directory }}/config-files/bin/git-helper.py'
-        - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
-        - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
-
-    - name: Add SSH public keys from config-files
-      ansible.posix.authorized_key:
-        user: kincerb
-        state: present
-        key: '{{ item }}'
-      with_file:
-        - kincerb_gpg_auth1.pub
-        - kincerb_gpg_auth2.pub
-
-    - name: Create symlinks for config files
-      ansible.builtin.file:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-        state: link
-      loop:
-        - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
-        - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
-        - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
-        - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
-        - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
-        - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
-        - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
-        - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
-        - { src: '{{ projects_directory }}/config-files/starship.toml', dest: '{{ config_directory }}/starship.toml' }
-
-    - name: Source common.sh in default bashrc
-      ansible.builtin.blockinfile:
-        path: '{{ home_directory }}/.bashrc'
-        state: present
-        block: |
-          if (which starship &>/dev/null); then
-              eval "$(starship init bash)"
-          fi
-          if [ -f ~/.config/bash.d/common.sh ]; then
-              source ~/.config/bash.d/common.sh
-          fi
-          [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-- name: Import sshd tasks
-  ansible.builtin.import_tasks: sshd.yml
-
-- name: Import common python tasks
-  ansible.builtin.import_tasks: python.yml
-  when: ansible_facts['os_family']|lower != 'redhat'
+- name: Setup configuration files
+  ansible.builtin.import_tasks: config.yml
+  tags:
+    - config
+    - never
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

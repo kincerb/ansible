@@ -1,0 +1,60 @@
+---
+- name: Setup various config files from git repo
+  block:
+    - name: Create config/bin directories in home
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: directory
+        mode: '{{ item.mode }}'
+      loop:
+        - { path: '{{ config_directory }}', mode: '0750' }
+        - { path: '{{ home_bin_directory }}', mode: '0750' }
+        - { path: '{{ ssh_directory }}', mode: '0750' }
+        - { path: '{{ ssh_socket_directory }}', mode: '0750' }
+        - { path: '{{ projects_directory }}', mode: '0750' }
+        - { path: '{{ home_directory }}', mode: '0750' }
+
+    - name: Clone config-files to setup shell
+      ansible.builtin.git:
+        repo: 'https://github.com/kincerb/config-files.git'
+        dest: '{{ projects_directory }}/config-files'
+        version: master
+
+    - name: Set permissions for executables in config-files
+      ansible.builtin.file:
+        path: '{{ item }}'
+        mode: '0750'
+      loop:
+        - '{{ projects_directory }}/config-files/bin/git-helper.py'
+        - '{{ projects_directory }}/config-files/bin/ssh-connd.py'
+        - '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh'
+
+    - name: Create symlinks for config files
+      ansible.builtin.file:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+        state: link
+      loop:
+        - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
+        - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
+        - { src: '{{ projects_directory }}/config-files/.vimrc', dest: '{{ home_directory }}/.vimrc' }
+        - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
+        - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
+        - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
+        - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
+        - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
+        - { src: '{{ projects_directory }}/config-files/starship.toml', dest: '{{ config_directory }}/starship.toml' }
+
+    - name: Source common.sh in default bashrc
+      ansible.builtin.blockinfile:
+        path: '{{ home_directory }}/.bashrc'
+        state: present
+        block: |
+          if (which starship &>/dev/null); then
+              eval "$(starship init bash)"
+          fi
+          if [ -f ~/.config/bash.d/common.sh ]; then
+              source ~/.config/bash.d/common.sh
+          fi
+          [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+...

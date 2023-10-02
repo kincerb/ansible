@@ -1,0 +1,67 @@
+---
+- name: Modify sshd config
+  become: true
+  block:
+    - name: Disable root login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PermitRootLogin\s+(no|yes)'
+        line: 'PermitRootLogin no'
+      notify:
+        - Reload sshd
+
+    - name: Enable agent forwarding
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowAgentForwarding\s+(no|yes)'
+        line: 'AllowAgentForwarding yes'
+      notify:
+        - Reload sshd
+
+    - name: Enable TCP forwading
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?AllowTcpForwarding\s+(no|yes)'
+        line: 'AllowTcpForwarding yes'
+      notify:
+        - Reload sshd
+
+    - name: Enable X11 forwading
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^[#]?X11Forwarding\s+(no|yes)'
+        line: 'X11Forwarding yes'
+      notify:
+        - Reload sshd
+
+    - name: Disable password login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^PasswordAuthentication\s+(no|yes)'
+        line: 'PasswordAuthentication no'
+      notify:
+        - Reload sshd
+
+- name: Create sudoers.d file for kincerb
+  become: true
+  ansible.builtin.copy:
+    src: 01-kincerb
+    dest: /etc/sudoers.d/01-kincerb
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Add SSH public keys from config-files
+  ansible.posix.authorized_key:
+    user: kincerb
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - kincerb_gpg_auth1.pub
+    - kincerb_gpg_auth2.pub
+...

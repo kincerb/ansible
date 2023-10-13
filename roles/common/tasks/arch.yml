@@ -3,18 +3,23 @@
   become: true
   community.general.pacman:
     name:
+      - atuin
       - bat
+      - ctags
+      - eza
+      - fish
       - neovim
       - nodejs
       - npm
       - python-pip
+      - ripgrep
       - rsync
       - socat
       - starship
-      - the_silver_searcher
       - tmux
       - vim
       - xsel
+      - wl-clipboard
     state: present
     update_cache: yes
   register: packages_installed

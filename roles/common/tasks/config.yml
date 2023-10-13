@@ -41,6 +41,7 @@
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
         state: link
+        force: true
       loop:
         - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
         - { src: '{{ projects_directory }}/config-files/ruff', dest: '{{ config_directory }}/ruff' }

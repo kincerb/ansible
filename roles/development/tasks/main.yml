@@ -9,11 +9,12 @@
 
 - name: Create venv for neovim # noqa package-latest
   ansible.builtin.pip:
-    name: '{{ item }}'
-    virtualenv: '{{ venvs_directory }}/neovim'
+    name: "{{ item }}"
+    virtualenv: "{{ venvs_directory }}/neovim"
     virtualenv_command: python3 -m venv
     state: latest
   loop:
+    - doq
     - pynvim
     - pip
     - isort
@@ -21,4 +22,3 @@
     - python-lsp-black
     - pylsp-mypy
     - ruff-lsp
-...

@@ -21,9 +21,9 @@
       - socat
       - starship
       - tmux
-      - vim
       - xsel
       - wl-clipboard
+      - yamllint
     state: present
     update_cache: true
   register: packages_installed
@@ -35,3 +35,4 @@
     dest: /usr/bin/batcat
     state: link
   when: "'bat' in packages_installed.packages"
+# vim: ft=yaml.ansible

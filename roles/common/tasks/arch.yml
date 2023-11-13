@@ -7,7 +7,11 @@
       - bat
       - ctags
       - eza
+      - fd
       - fish
+      - libstdc++5
+      - go
+      - lazygit
       - neovim
       - nodejs
       - npm
@@ -21,14 +25,13 @@
       - xsel
       - wl-clipboard
     state: present
-    update_cache: yes
+    update_cache: true
   register: packages_installed
 
 - name: Create link to bat from batcat
   become: true
-  file:
+  ansible.builtin.file:
     src: /usr/bin/bat
     dest: /usr/bin/batcat
     state: link
   when: "'bat' in packages_installed.packages"
-...

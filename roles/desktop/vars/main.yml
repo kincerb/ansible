@@ -1,14 +1,10 @@
 ---
-home_directory: "{{ lookup('env', 'HOME') }}"
-font_info:
-  url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
-  install_directory: "{{ home_directory }}/.local/share/fonts"
-  names:
-    - AnonymousPro
-    - CascadiaCode
-    - FantasqueSansMono
-    - FiraCode
-    - IBMPlexMono
-    - SourceCodePro
+desktop_fonts:
+  - AnonymousPro
+  - CascadiaCode
+  - FantasqueSansMono
+  - FiraCode
+  - IBMPlexMono
+  - SourceCodePro
 ...
 # vim: ft=yaml.ansible ts=2 sw=2 sts=2

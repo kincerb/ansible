@@ -1,7 +1,22 @@
 ---
 - name: Get nerd fonts and install
   become: false
+  vars:
+    home_directory: "{{ lookup('env', 'HOME')}}"
+    install_directory: "{{ home_directory }}/.local/share/fonts"
   block:
+    - name: Fetch latest release
+      community.general.github_release:
+        user: ryanoasis
+        repo: nerd-fonts
+        action: latest_release
+      register: gh_release
+
+    - name: Print latest release tag
+      ansible.builtin.debug:
+        var: gh_release
+        verbosity: 1
+
     - name: Create fonts download directory
       ansible.builtin.file:
         path: '{{ home_directory }}/Downloads/fonts'
@@ -9,24 +24,24 @@
 
     - name: Create install directory for fonts
       ansible.builtin.file:
-        path: '{{ font_info.install_directory }}/{{ item }}'
+        path: '{{ install_directory }}/{{ item }}'
         state: directory
         mode: 0755
-      loop: '{{ font_info.names }}'
+      loop: '{{ desktop_fonts }}'
 
     - name: Download fonts
       ansible.builtin.get_url:
-        url: '{{ font_info.url }}/{{ item }}.zip'
+        url: 'https://github.com/ryanoasis/nerd-fonts/releases/download/{{ gh_release.tag }}/{{ item }}.zip'
         dest: '{{ home_directory }}/Downloads/fonts'
-      loop: '{{ font_info.names }}'
+      loop: '{{ desktop_fonts }}'
 
     - name: Extract fonts
       ansible.builtin.unarchive:
         src: '{{ home_directory }}/Downloads/fonts/{{ item }}.zip'
-        dest: '{{ font_info.install_directory }}/{{ item }}'
+        dest: '{{ install_directory }}/{{ item }}'
         remote_src: yes
         mode: 0755
-      loop: '{{ font_info.names }}'
+      loop: '{{ desktop_fonts }}'
 
     - name: Update font cache
       ansible.builtin.command:

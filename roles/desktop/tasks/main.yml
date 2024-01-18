@@ -1,6 +1,8 @@
 ---
 - name: Import font tasks
   ansible.builtin.import_tasks: fonts.yml
+  tags:
+    - fonts
 
 - name: Import desktop tasks for Ubuntu
   import_tasks: ubuntu.yml

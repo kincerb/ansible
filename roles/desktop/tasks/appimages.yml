@@ -1,0 +1,26 @@
+---
+- name: Get WezTerm release / download / install
+  become: false
+  vars:
+    home_directory: "{{ lookup('env', 'HOME') }}"
+    install_directory: "{{ home_directory }}/Applications"
+  block:
+    - name: Fetch latest release
+      community.general.github_release:
+        user: wez
+        repo: wezterm
+        action: latest_release
+      register: gh_release
+
+    - name: Print latest release tag
+      ansible.builtin.debug:
+        var: gh_release
+        verbosity: 1
+
+    - name: Download WezTerm
+      ansible.builtin.get_url:
+        url: 'https://github.com/wez/wezterm/releases/download/{{ gh_release.tag }}/WezTerm-{{ gh_release.tag }}-Ubuntu20.04.AppImage'
+        dest: '{{ install_directory }}/WezTerm.AppImage'
+        mode: '755'
+...
+# vim: ft=yaml.ansible ts=2 sw=2 sts=2

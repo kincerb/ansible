@@ -5,7 +5,7 @@
     - fonts
 
 - name: Import AppImage tasks
-  ansible.builin.import_tasks: appimages.yml
+  ansible.builtin.import_tasks: appimages.yml
   tags:
     - appimages
 

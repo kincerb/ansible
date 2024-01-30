@@ -16,6 +16,7 @@
       - nodejs
       - npm
       - python-pip
+      - python-pipx
       - ripgrep
       - rsync
       - socat

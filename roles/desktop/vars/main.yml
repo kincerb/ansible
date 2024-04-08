@@ -6,5 +6,9 @@ desktop_fonts:
   - FiraCode
   - IBMPlexMono
   - SourceCodePro
-...
-# vim: ft=yaml.ansible ts=2 sw=2 sts=2
+appimages:
+  - user: wez
+    repo: wezterm
+    download_url: https://github.com/wez/wezterm/releases/download
+---
+# vim: ft=yaml ts=2 sw=2 sts=2

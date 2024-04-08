@@ -10,5 +10,4 @@ appimages:
   - user: wez
     repo: wezterm
     download_url: https://github.com/wez/wezterm/releases/download
----
 # vim: ft=yaml ts=2 sw=2 sts=2

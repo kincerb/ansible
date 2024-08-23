@@ -1,11 +1,15 @@
 ---
 desktop_fonts:
+  - Agave
   - AnonymousPro
   - CascadiaCode
   - FantasqueSansMono
   - FiraCode
   - IBMPlexMono
+  - IosevkaTerm
+  - Lilex
   - SourceCodePro
+  - 0xProto
 appimages:
   - user: wez
     repo: wezterm

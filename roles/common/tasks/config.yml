@@ -11,13 +11,13 @@
         - { path: '{{ home_directory }}/.local/npm', mode: '0750' }
         - { path: '{{ home_directory }}/.local/venvs', mode: '0750' }
         - { path: '{{ config_directory }}', mode: '0750' }
-        - { path: '{{ config_directory }}/ranger', mode: '0750' }
+        - { path: '{{ config_directory }}/atuin', mode: '0750' }
         - { path: '{{ config_directory }}/fish', mode: '0750' }
-        - { path: '{{ config_directory }}/fish/completions', mode: '0750' }
-        - { path: '{{ config_directory }}/fish/conf.d', mode: '0750' }
-        - { path: '{{ config_directory }}/fish/functions', mode: '0750' }
+        - { path: '{{ config_directory }}/lazygit', mode: '0750' }
+        - { path: '{{ config_directory }}/nvim', mode: '0750' }
+        - { path: '{{ config_directory }}/.gnupg', mode: '0700' }
         - { path: '{{ home_bin_directory }}', mode: '0750' }
-        - { path: '{{ ssh_directory }}', mode: '0750' }
+        - { path: '{{ ssh_directory }}', mode: '0700' }
         - { path: '{{ ssh_socket_directory }}', mode: '0750' }
         - { path: '{{ projects_directory }}', mode: '0750' }
 
@@ -25,7 +25,7 @@
       ansible.builtin.git:
         repo: 'https://github.com/kincerb/config-files.git'
         dest: '{{ projects_directory }}/config-files'
-        version: reorg
+        version: master
 
     - name: Set permissions for executables in config-files
       ansible.builtin.file:
@@ -43,39 +43,30 @@
         state: link
         force: true
       loop:
-        - { src: '{{ projects_directory }}/config-files/bash.d', dest: '{{ config_directory }}/bash.d' }
+        - { src: '{{ projects_directory }}/config-files/atuin/config.toml', dest: '{{ config_directory }}/atuin/config.toml' }
+        - { src: '{{ projects_directory }}/config-files/joshuto', dest: '{{ config_directory }}/joshuto' }
+        - { src: '{{ projects_directory }}/config-files/ptpython', dest: '{{ config_directory }}/ptpython' }
         - { src: '{{ projects_directory }}/config-files/ruff', dest: '{{ config_directory }}/ruff' }
         - { src: '{{ projects_directory }}/config-files/tmux', dest: '{{ config_directory }}/tmux' }
-        - { src: '{{ projects_directory }}/config-files/nvim', dest: '{{ config_directory }}/nvim' }
+        - { src: '{{ projects_directory }}/config-files/wezterm', dest: '{{ config_directory }}/wezterm' }
+        - { src: '{{ projects_directory }}/config-files/nvim/lua', dest: '{{ config_directory }}/nvim/lua' }
+        - { src: '{{ projects_directory }}/config-files/nvim/snippets', dest: '{{ config_directory }}/nvim/snippets' }
+        - { src: '{{ projects_directory }}/config-files/nvim/init.lua', dest: '{{ config_directory }}/nvim/init.lua' }
+        - { src: '{{ projects_directory }}/config-files/nvim/stylua.toml', dest: '{{ config_directory }}/nvim/stylua.toml' }
         - { src: '{{ projects_directory }}/config-files/.tmux.conf', dest: '{{ home_directory }}/.tmux.conf' }
         - { src: '{{ projects_directory }}/config-files/.gitconfig', dest: '{{ home_directory }}/.gitconfig' }
         - { src: '{{ projects_directory }}/config-files/.ideavimrc', dest: '{{ home_directory }}/.ideavimrc' }
         - { src: '{{ projects_directory }}/config-files/.npmrc', dest: '{{ home_directory }}/.npmrc' }
+        - { src: '{{ projects_directory }}/config-files/gnupg/dirmngr.conf', dest: '{{ config_directory }}/.gnupg/dirmngr.conf' }
+        - { src: '{{ projects_directory }}/config-files/gnupg/gpg-agent.conf', dest: '{{ config_directory }}/.gnupg/gpg-agent.conf' }
+        - { src: '{{ projects_directory }}/config-files/gnupg/gpg.conf', dest: '{{ config_directory }}/.gnupg/gpg.conf' }
+        - { src: '{{ projects_directory }}/config-files/lazygit/config.yml', dest: '{{ config_directory }}/lazygit/config.yml' }
         - { src: '{{ projects_directory }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
         - { src: '{{ projects_directory }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
         - { src: '{{ projects_directory }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
         - { src: '{{ projects_directory }}/config-files/starship.toml', dest: '{{ config_directory }}/starship.toml' }
-        - { src: '{{ projects_directory }}/config-files/ranger/rc.conf', dest: '{{ config_directory }}/ranger/rc.conf' }
         - { src: '{{ projects_directory }}/config-files/fish/config.fish', dest: '{{ config_directory }}/fish/config.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/completions/workon.fish', dest: '{{ config_directory }}/fish/completions/config.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/conf.d/envvars.fish', dest: '{{ config_directory }}/fish/conf.d/envvars.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/cat.fish', dest: '{{ config_directory }}/fish/functions/cat.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/proxy.fish', dest: '{{ config_directory }}/fish/functions/proxy.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/ssh_cleanup.fish', dest: '{{ config_directory }}/fish/functions/ssh_cleanup.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/tail.fish', dest: '{{ config_directory }}/fish/functions/tail.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/update_ssh_auth.fish', dest: '{{ config_directory }}/fish/functions/update_ssh_auth.fish' }
-        - { src: '{{ projects_directory }}/config-files/fish/functions/workon.fish', dest: '{{ config_directory }}/fish/functions/workon.fish' }
-
-    - name: Source common.sh in default bashrc
-      ansible.builtin.blockinfile:
-        path: '{{ home_directory }}/.bashrc'
-        state: present
-        block: |
-          if (which starship &>/dev/null); then
-              eval "$(starship init bash)"
-          fi
-          if [ -f ~/.config/bash.d/common.sh ]; then
-              source ~/.config/bash.d/common.sh
-          fi
-          [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+        - { src: '{{ projects_directory }}/config-files/fish/completions', dest: '{{ config_directory }}/fish/completions' }
+        - { src: '{{ projects_directory }}/config-files/fish/conf.d', dest: '{{ config_directory }}/fish/conf.d' }
+        - { src: '{{ projects_directory }}/config-files/fish/functions', dest: '{{ config_directory }}/fish/functions' }
 ...

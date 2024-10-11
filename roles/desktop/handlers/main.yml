@@ -1,2 +1,5 @@
 ---
+- name: Update font cache  # noqa: no-changed-when
+  ansible.builtin.command:
+    cmd: fc-cache
 ...

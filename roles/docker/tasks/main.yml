@@ -22,4 +22,4 @@
     group: root
     mode: '0600'
   notify:
-    - restart docker
+    - Restart docker

@@ -22,5 +22,5 @@
         - docker-buildx-plugin
         - docker-compose-plugin
       notify:
-        - restart docker
+        - Restart docker
 ...

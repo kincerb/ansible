@@ -1,8 +1,10 @@
 ---
 - name: Install kvm guest packages
-  apt:
+  ansible.builtin.apt:
+    update_cache: true
     package:
       - qemu-guest-agent
+      - spice-vdagent
   notify:
     - start qemu-guest-agent
 ...

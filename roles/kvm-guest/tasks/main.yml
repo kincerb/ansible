@@ -1,9 +1,10 @@
 ---
 - name: Import kvm guest tasks for ubuntu
-  import_tasks: ubuntu.yml
+  ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Configure virtiofs shares
+  when: virtio_shares is defined
   block:
     - name: Create mountpoints
       ansible.builtin.file:
@@ -22,6 +23,4 @@
         opts: rw,noatime,_netdev
         state: mounted
       loop: "{{ virtio_shares }}"
-
-  when: virtio_shares is defined
 ...

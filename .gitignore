@@ -94,3 +94,4 @@ coverage.xml
 scratch*
 tags
 /.env*
+logs

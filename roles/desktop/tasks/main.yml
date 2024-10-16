@@ -10,10 +10,10 @@
     - appimages
 
 - name: Import desktop tasks for Ubuntu
-  import_tasks: ubuntu.yml
+  ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: Import desktop tasks for Arch
-  import_tasks: arch.yml
+  ansible.builtin.import_tasks: arch.yml
   when: ansible_facts['os_family']|lower == 'archlinux'
 ...

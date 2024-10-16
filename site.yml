@@ -3,14 +3,17 @@
   hosts: all
   vars:
     home_directory: "{{ ansible_facts['env']['HOME'] }}"
-    local_directory: '{{ home_directory }}/.local'
-    home_bin_directory: '{{ local_directory }}/bin'
-    venvs_directory: '{{ local_directory }}/venvs'
-    share_directory: '{{ local_directory }}/share'
-    projects_directory: '{{ home_directory }}/Projects'
-    config_directory: '{{ home_directory }}/.config'
-    ssh_directory: '{{ home_directory }}/.ssh'
-    ssh_socket_directory: '{{ ssh_directory }}/socket'
+    local_directory: "{{ home_directory }}/.local"
+    home_bin_directory: "{{ local_directory }}/bin"
+    venvs_directory: "{{ local_directory }}/venvs"
+    share_directory: "{{ local_directory }}/share"
+    projects_directory: "{{ home_directory }}/Projects"
+    config_directory: "{{ home_directory }}/.config"
+    ssh_directory: "{{ home_directory }}/.ssh"
+    ssh_socket_directory: "{{ ssh_directory }}/socket"
+  tasks:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
 
 - name: Import common playbook
   import_playbook: common.yml
@@ -38,4 +41,3 @@
 
 - name: Import wireguard playbook
   import_playbook: wireguard.yml
-...

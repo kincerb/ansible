@@ -31,6 +31,7 @@
   import_playbook: development.yml
 
 - name: Import desktop playbook
+  when: ansible_facts.services["display-manager.service"]["state"] == "active"
   import_playbook: desktop.yml
 
 - name: Import samba playbook

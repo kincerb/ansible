@@ -13,5 +13,7 @@ desktop_fonts:
 appimages:
   - user: wez
     repo: wezterm
-    download_url: https://github.com/wez/wezterm/releases/download
+    download_prefix: https://github.com/wez/wezterm/releases/download
+    download_suffix: -Ubuntu20.04.AppImage
+    bin_name: WezTerm.AppImage
 # vim: ft=yaml ts=2 sw=2 sts=2

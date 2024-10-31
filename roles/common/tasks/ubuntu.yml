@@ -1,10 +1,14 @@
 ---
-- name: Install common packages
+- name: Bring in Ubuntu vars
+  ansible.builtin.include_vars:
+    file: ubuntu.yml
+
+- name: Install common packages in standard repos
   become: true
   ansible.builtin.apt:
     update_cache: true
     package:
-      name: "{{ common_packages }}"
+      "{{ common_packages }}"
 
 - name: Get nodejs stat
   ansible.builtin.stat:

@@ -3,13 +3,13 @@
   block:
     - name: Download script
       ansible.builtin.get_url:
-        url: https://deb.nodesource.com/setup_17.x
-        dest: /tmp/node_setup_17.x.sh
+        url: https://deb.nodesource.com/setup_22.x
+        dest: /tmp/node_setup_22.x.sh
         mode: '0750'
 
     - name: Run nodejs setup script
       become: true
-      ansible.builtin.command: /tmp/node_setup_17.x.sh
+      ansible.builtin.command: /tmp/node_setup_22.x.sh
       args:
         creates: /usr/bin/node
 
@@ -21,7 +21,7 @@
   always:
     - name: Remove nodejs setup script
       ansible.builtin.file:
-        path: /tmp/node_setup_17.x.sh
+        path: /tmp/node_setup_22.x.sh
         state: absent
       ignore_errors: true # noqa ignore-errors
 ...

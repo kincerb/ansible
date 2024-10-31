@@ -24,5 +24,9 @@
   tags:
     - appimage
     - never
+
+- name: Run common tasks for Ubuntu
+  ansible.builtin.import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'debian'
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

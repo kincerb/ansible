@@ -10,10 +10,4 @@ desktop_fonts:
   - Lilex
   - SourceCodePro
   - 0xProto
-appimages:
-  - user: wez
-    repo: wezterm
-    download_prefix: https://github.com/wez/wezterm/releases/download
-    download_suffix: -Ubuntu20.04.AppImage
-    bin_name: WezTerm.AppImage
-# vim: ft=yaml ts=2 sw=2 sts=2
+# vim: ft=yaml.ansible

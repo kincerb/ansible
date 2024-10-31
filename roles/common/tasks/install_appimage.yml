@@ -1,0 +1,30 @@
+---
+- name: Get release / download / install for {{ appimage.name }}
+  become: false
+  block:
+    - name: Fetch latest release {{ appimage.name }}
+      community.general.github_release:
+        user: "{{ appimage.user }}"
+        repo: "{{ appimage.repo }}"
+        action: latest_release
+      register: gh_release
+
+    - name: Print latest release tag
+      ansible.builtin.debug:
+        var: gh_release
+        verbosity: 1
+
+    - name: Download {{ appimage.name }}
+      ansible.builtin.get_url:
+        url: '{{ appimage.download_url }}/{{ gh_release.tag }}/{{ appimage.asset_prefix }}{{ appimage.asset_include_tag | ternary(gh_release.tag, "") }}{{ appimage.asset_suffix }}'
+        dest: '{{ common_directories.appimage }}/{{ appimage.dest_name }}'
+        mode: '755'
+
+    - name: Link {{ appimage.name }}
+      ansible.builtin.file:
+        src: "{{ common_directories.appimage }}/{{ appimage.dest_name }}"
+        dest: "{{ common_directories.local_bin }}/{{ appimage.link_name }}"
+        state: link
+        force: true
+...
+# vim: ft=yaml.ansible ts=2 sw=2 sts=2

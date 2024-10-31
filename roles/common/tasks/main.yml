@@ -11,5 +11,18 @@
   tags:
     - config
     - never
+
+- name: Install appimages
+  ansible.builtin.include_tasks:
+    file: install_appimage.yml
+    apply:
+      vars:
+        appimage: "{{ item }}"
+      tags:
+        - appimage
+  loop: "{{ common_appimages }}"
+  tags:
+    - appimage
+    - never
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

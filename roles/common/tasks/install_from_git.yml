@@ -1,0 +1,37 @@
+---
+- name: Get release / download / install for {{ package.name }}
+  become: false
+  block:
+    - name: Fetch latest release {{ package.name }}
+      community.general.github_release:
+        user: "{{ package.user }}"
+        repo: "{{ package.repo }}"
+        action: latest_release
+      register: gh_release
+
+    - name: Print latest release tag
+      ansible.builtin.debug:
+        var: gh_release
+        verbosity: 1
+
+    - name: Download {{ package.name }}
+      ansible.builtin.get_url:
+        url: >
+          '{{ package.download_url }}/
+          {{ gh_release.tag }}/
+          {{ package.asset_prefix }}
+          {{ package.asset_include_tag | ternary(gh_release.tag, "") }}
+          {{ package.asset_suffix }}'
+        dest: /tmp
+        mode: '755'
+      register: downloaded_asset
+
+    - name: Link {{ package.name }}
+      when: package.link_name | bool
+      ansible.builtin.file:
+        src: "{{ package.dest_file }}"
+        dest: "{{ package.link_name }}"
+        state: link
+        force: true
+...
+# vim: ft=yaml.ansible ts=2 sw=2 sts=2

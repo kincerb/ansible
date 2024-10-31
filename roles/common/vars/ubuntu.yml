@@ -1,4 +1,33 @@
 ---
+common_node_version: 22
+common_git_software:
+  - name: delta
+    user: dandavison
+    repo: delta
+    download_url: https://github.com/dandavison/delta/releases/download
+    asset_prefix: delta-
+    asset_suffix: -x86_64-unknown-linux-gnu.tar.gz
+    asset_include_tag: true
+    dest_file: /usr/local/bin/delta
+    link_name:
+  - name:
+    user:
+    repo:
+    download_url:
+    asset_prefix:
+    asset_suffix:
+    asset_include_tag:
+    dest_name:
+    link_name:
+  - name:
+    user:
+    repo:
+    download_url:
+    asset_prefix:
+    asset_suffix:
+    asset_include_tag:
+    dest_name:
+    link_name:
 common_packages:
   - apt-transport-https
   - bat
@@ -34,7 +63,6 @@ common_packages:
   - tmux
   - unzip
   - util-linux
-  - vim
   - xsel
   - xz-utils
 ...

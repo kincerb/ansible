@@ -8,10 +8,15 @@ common_packages:
   - dosfstools
   - dpkg
   - e2fsprogs
+  - eza
+  - fd-find
   - findutils
+  - fish
+  - fuse3
   - git
   - gnupg
   - gnupg-utils
+  - gvfs-fuse
   - gzip
   - iftop
   - jq
@@ -20,6 +25,7 @@ common_packages:
   - python3-pip
   - python3-venv
   - readline-common
+  - ripgrep
   - rsync
   - silversearcher-ag
   - socat

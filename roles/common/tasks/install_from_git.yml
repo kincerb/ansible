@@ -16,22 +16,44 @@
 
     - name: Download {{ package.name }}
       ansible.builtin.get_url:
-        url: >
-          '{{ package.download_url }}/
-          {{ gh_release.tag }}/
-          {{ package.asset_prefix }}
-          {{ package.asset_include_tag | ternary(gh_release.tag, "") }}
-          {{ package.asset_suffix }}'
+        url:
+          "{{ package.url_prefix }}/\
+          {{ package.user }}/\
+          {{ package.repo }}/\
+          releases/download/\
+          {{ gh_release.tag }}/\
+          {{ package.asset_prefix }}\
+          {{ package.asset_include_tag | ternary(gh_release.tag, \"\") }}\
+          {{ package.asset_suffix }}"
         dest: /tmp
         mode: '755'
       register: downloaded_asset
 
+    - name: Create temp directory for {{ package.name }}
+      ansible.builtin.file:
+        path: /tmp/{{ package.name }}
+        state: directory
+        mode: '0755'
+
+    - name: Extract {{ package.name }}
+      ansible.builtin.unarchive:
+        src: "{{ downloaded_asset.dest }}"
+        remote_src: true
+        dest: /tmp/{{ package.name }}
+
     - name: Link {{ package.name }}
+      become: true
       when: package.link_name | bool
       ansible.builtin.file:
-        src: "{{ package.dest_file }}"
+        src: /usr/local/bin/{{ package.bin_name }}
         dest: "{{ package.link_name }}"
         state: link
         force: true
+  always:
+    - name: Remove downloaded asset of {{ package.name }}
+      when: downloaded_asset.dest | bool
+      ansible.builtin.file:
+        path: "{{ downloaded_asset.dest }}"
+        state: absent
 ...
 # vim: ft=yaml.ansible ts=2 sw=2 sts=2

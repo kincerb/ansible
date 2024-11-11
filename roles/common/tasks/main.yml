@@ -25,6 +25,21 @@
     - appimage
     - never
 
+- name: Install git software
+  ansible.builtin.include_tasks:
+    file: install_from_git.yml
+    apply:
+      vars:
+        package: "{{ item }}"
+      tags:
+        - git
+        - never
+  loop: "{{ common_git_software }}"
+  tags:
+    - git
+    - never
+
+
 - name: Run common tasks for Ubuntu
   ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'

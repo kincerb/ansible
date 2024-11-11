@@ -16,7 +16,15 @@
 
     - name: Download {{ appimage.name }}
       ansible.builtin.get_url:
-        url: '{{ appimage.download_url }}/{{ gh_release.tag }}/{{ appimage.asset_prefix }}{{ appimage.asset_include_tag | ternary(gh_release.tag, "") }}{{ appimage.asset_suffix }}'
+        url:
+          "{{ appimage.url_prefix }}/\
+          {{ appimage.user }}/\
+          {{ appimage.repo }}/\
+          releases/download/\
+          {{ gh_release.tag }}/\
+          {{ appimage.asset_prefix }}\
+          {{ appimage.asset_include_tag | ternary(gh_release.tag, \"\") }}\
+          {{ appimage.asset_suffix }}"
         dest: '{{ common_directories.appimage }}/{{ appimage.dest_name }}'
         mode: '755'
 

@@ -3,6 +3,7 @@ asn1crypto
 bcrypt
 cffi
 cryptography
+github3.py
 idna
 Jinja2
 MarkupSafe

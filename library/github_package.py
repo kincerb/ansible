@@ -106,6 +106,40 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils.common.text.converters import to_native
 
 
+class GitHubPackage(object):
+    """Class to download artifacts from GitHub projects."""
+
+    repo: str
+    user: str
+    release: str
+    asset_suffix: str
+    tmp_dir: str
+    logged_in: bool
+
+    def __init__(self, *, user, repo, asset_suffix, **kwargs):
+        """Initialize object with arguments given."""
+        self._gh = github3.GitHub()
+        self.user = user
+        self.repo = repo
+        self.asset_suffix = asset_suffix
+        self.logged_in = False
+
+        if kwargs.get("token") is not None:
+            # TODO: Move to a method
+            try:
+                self._gh.login(token=kwargs.get("token"))
+            except Exception:
+                if kwargs.get("login_required", False):
+                    raise
+                else:
+                    pass
+            else:
+                self.logged_in = True
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.repo!r})"
+
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(

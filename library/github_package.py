@@ -124,23 +124,29 @@ class GitHubPackage(object):
         self.asset_suffix = asset_suffix
         self.logged_in = False
 
+        self._post_init(**kwargs)
+
+    def __repr__(self):  # noqa: D105
+        return f"{type(self).__name__}({self.repo!r})"
+
+    def _post_init(self, **kwargs) -> None:
         if kwargs.get("token") is not None:
-            # TODO: Move to a method
             try:
-                self._gh.login(token=kwargs.get("token"))
-            except Exception:
+                self._gh.login(token=kwargs.pop("token"))
+            except github3.exceptions.AuthenticationFailed as e:
                 if kwargs.get("login_required", False):
-                    raise
+                    module.fail_json(
+                        msg="Failed to connect to GitHub: %s" % to_native(e),
+                        details="Please check username and password or token "
+                        "for repository %s" % repo,
+                    )
                 else:
                     pass
-            else:
-                self.logged_in = True
-
-    def __repr__(self):
-        return f"{type(self).__name__}({self.repo!r})"
+            self.logged_in = True
 
 
 def main():
+    """Entry point for github_package module."""
     module = AnsibleModule(
         argument_spec=dict(
             repo=dict(required=True),
@@ -162,28 +168,7 @@ def main():
 
     repo = module.params["repo"]
     user = module.params["user"]
-    password = module.params["password"]
-    login_token = module.params["token"]
     release = module.params["release"]
-
-    # login to github
-    try:
-        if password:
-            gh_obj = github3.login(user, password=password)
-        elif login_token:
-            gh_obj = github3.login(token=login_token)
-        else:
-            gh_obj = github3.GitHub()
-
-        # test if we're actually logged in
-        if password or login_token:
-            gh_obj.me()
-    except github3.exceptions.AuthenticationFailed as e:
-        module.fail_json(
-            msg="Failed to connect to GitHub: %s" % to_native(e),
-            details="Please check username and password or token "
-            "for repository %s" % repo,
-        )
 
     repository = gh_obj.repository(user, repo)
 

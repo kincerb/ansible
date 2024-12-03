@@ -4,11 +4,6 @@
   tags:
     - fonts
 
-- name: Import AppImage tasks
-  ansible.builtin.import_tasks: appimages.yml
-  tags:
-    - appimages
-
 - name: Import desktop tasks for Ubuntu
   ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'

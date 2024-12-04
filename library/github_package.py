@@ -24,18 +24,12 @@ options:
     token:
         description:
             - GitHub Personal Access Token for authenticating.
-            - Mutually exclusive with O(password).
         type: str
     user:
         description:
             - The GitHub account that owns the repository
         type: str
         required: true
-    password:
-        description:
-            - The GitHub account password for the user.
-            - Mutually exclusive with O(token).
-        type: str
     repo:
         description:
             - Repository name
@@ -45,8 +39,17 @@ options:
         description:
             - Tagged release to install
         type: str
+        required: false
+    asset_suffix:
+        description:
+            - Filename suffix matching asset to download
+        type: str
         required: true
-        choices: [ 'latest', 'create_release' ]
+    tmp_dir:
+        description:
+            - Temporary storage for downloads
+        type: str
+        required: false
 
 attributes:
     check_mode:
@@ -60,30 +63,23 @@ requirements:
     - "github3.py"
 """
 
-EXAMPLES = """
-- name: Get latest release of a public repository
+EXAMPLES = r"""
+- name: Install the latest release of delta
   github_package:
-    user: ansible
-    repo: ansible
-    action: latest_release
+    user: dandavison
+    repo: delta
+    release: latest
+    asset_suffix: x86_64-unknown-linux-gnu.tar.gz
 
-- name: Get latest release of testuseer/testrepo
+- name: Install the 10.2.0 release of fd
   github_package:
-    token: tokenabc1234567890
-    user: testuser
-    repo: testrepo
-    action: latest_release
-
-- name: Get latest release of test repo using username and password
-  github_package:
-    user: testuser
-    password: secret123
-    repo: testrepo
-    action: latest_release
-
+    user: sharkdp
+    repo: fd
+    release: 10.2.0
+    asset_suffix: x86_64-unknown-linux-gnu.tar.gz
 """
 
-RETURN = """
+RETURN = r"""
 tag:
     description: Version of the created/latest release.
     type: str
@@ -92,6 +88,7 @@ tag:
 """
 
 import traceback
+from pathlib import Path
 
 GITHUB_IMP_ERR = None
 try:
@@ -145,21 +142,23 @@ class GitHubPackage(object):
             self.logged_in = True
 
 
-def main():
+def run_module():
     """Entry point for github_package module."""
-    module = AnsibleModule(
-        argument_spec=dict(
-            repo=dict(required=True),
-            user=dict(required=True),
-            password=dict(no_log=True),
-            token=dict(no_log=True),
-            release=dict(type="str", default="latest"),
-            asset_suffix=dict(type="str", required=True),
-            tmp_dir=dict(type="str", default="/tmp"),
-        ),
-        supports_check_mode=True,
-        mutually_exclusive=(("password", "token"),),
+    module_args = dict(
+        repo=dict(required=True),
+        user=dict(required=True),
+        token=dict(no_log=True),
+        release=dict(type="str", default="latest"),
+        asset_suffix=dict(type="str", required=True),
+        tmp_dir=dict(type="str", default="/tmp"),
     )
+
+    result = dict(changed=False, original_message="", message="")
+
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+
+    if module.check_mode:
+        module.exit_json(**result)
 
     if not HAS_GITHUB_API:
         module.fail_json(
@@ -181,6 +180,11 @@ def main():
             module.exit_json(tag=release.tag_name)
         else:
             module.exit_json(tag=None)
+
+
+def main():
+    """Entry point for github_package module."""
+    run_module()
 
 
 if __name__ == "__main__":

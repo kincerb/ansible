@@ -48,7 +48,12 @@ options:
     tmp_dir:
         description:
             - Temporary storage for downloads
-        type: str
+        type: path
+        required: false
+    dest:
+        description:
+            - Destination for extracted asset
+        type: path
         required: false
 
 attributes:
@@ -70,6 +75,7 @@ EXAMPLES = r"""
     repo: delta
     release: latest
     asset_suffix: x86_64-unknown-linux-gnu.tar.gz
+    dest: /usr/local/bin
 
 - name: Install the 10.2.0 release of fd
   github_package:
@@ -113,9 +119,10 @@ class GitHubPackage(object):
     tmp_dir: str
     logged_in: bool
 
-    def __init__(self, *, user, repo, asset_suffix, **kwargs):
+    def __init__(self, *, module, user, repo, asset_suffix, **kwargs):
         """Initialize object with arguments given."""
         self._gh = github3.GitHub()
+        self.module = module
         self.user = user
         self.repo = repo
         self.asset_suffix = asset_suffix
@@ -132,10 +139,10 @@ class GitHubPackage(object):
                 self._gh.login(token=kwargs.pop("token"))
             except github3.exceptions.AuthenticationFailed as e:
                 if kwargs.get("login_required", False):
-                    module.fail_json(
+                    self.module.fail_json(
                         msg="Failed to connect to GitHub: %s" % to_native(e),
                         details="Please check username and password or token "
-                        "for repository %s" % repo,
+                        "for repository %s" % self.repo,
                     )
                 else:
                     pass
@@ -150,7 +157,8 @@ def run_module():
         token=dict(no_log=True),
         release=dict(type="str", default="latest"),
         asset_suffix=dict(type="str", required=True),
-        tmp_dir=dict(type="str", default="/tmp"),
+        tmp_dir=dict(type="path", default="/tmp"),
+        dest=dict(type="path", default="/usr/local/bin"),
     )
 
     result = dict(changed=False, original_message="", message="")

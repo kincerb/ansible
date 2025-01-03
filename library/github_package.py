@@ -50,11 +50,13 @@ options:
             - Temporary storage for downloads
         type: path
         required: false
+        default: /tmp
     dest:
         description:
             - Destination for extracted asset
         type: path
         required: false
+        default: /usr/local/bin
 
 attributes:
     check_mode:
@@ -96,14 +98,14 @@ tag:
 import traceback
 from pathlib import Path
 
-GITHUB_IMP_ERR = None
 try:
     import github3
-
-    HAS_GITHUB_API = True
 except ImportError:
-    GITHUB_IMP_ERR = traceback.format_exc()
-    HAS_GITHUB_API = False
+    HAS_GITHUB = False
+    GITHUB_IMPORT_ERROR = traceback.format_exc()
+else:
+    HAS_GITHUB = True
+    GITHUB_IMPORT_ERROR = None
 
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils.common.text.converters import to_native
@@ -119,75 +121,54 @@ class GitHubPackage(object):
     tmp_dir: str
     logged_in: bool
 
-    def __init__(self, *, module, user, repo, asset_suffix, **kwargs):
+    def __init__(self, module: AnsibleModule):
         """Initialize object with arguments given."""
-        self._gh = github3.GitHub()
         self.module = module
-        self.user = user
-        self.repo = repo
-        self.asset_suffix = asset_suffix
-        self.logged_in = False
+        self.user = module.params["user"]
+        self.repo = module.params["repo"]
+        self.asset_suffix = module.params["asset_suffix"]
+        self.tmp_dir = module.params["tmp_dir"]
+        self.release = module.params["release"]
+        self.dest = module.params["dest"]
+        self.token = module.params["token"]
 
-        self._post_init(**kwargs)
+        self._gh = github3.GitHub()
+        self.logged_in = False
+        self.result = {}
 
     def __repr__(self):  # noqa: D105
         return f"{type(self).__name__}({self.repo!r})"
 
-    def _post_init(self, **kwargs) -> None:
-        if kwargs.get("token") is not None:
-            try:
-                self._gh.login(token=kwargs.pop("token"))
-            except github3.exceptions.AuthenticationFailed as e:
-                if kwargs.get("login_required", False):
-                    self.module.fail_json(
-                        msg="Failed to connect to GitHub: %s" % to_native(e),
-                        details="Please check username and password or token "
-                        "for repository %s" % self.repo,
-                    )
-                else:
-                    pass
+    def login(self) -> None:
+        try:
+            self._gh.login(token=self.token)
+        except github3.exceptions.AuthenticationFailed as e:
+            self.module.fail_json(msg="Failed GitHub login with token", exception=e)
+        else:
             self.logged_in = True
 
 
 def run_module():
     """Entry point for github_package module."""
-    module_args = dict(
-        repo=dict(required=True),
-        user=dict(required=True),
-        token=dict(no_log=True),
-        release=dict(type="str", default="latest"),
-        asset_suffix=dict(type="str", required=True),
-        tmp_dir=dict(type="path", default="/tmp"),
-        dest=dict(type="path", default="/usr/local/bin"),
+    module = AnsibleModule(
+        argument_spec=dict(
+            repo=dict(required=True),
+            user=dict(required=True),
+            token=dict(no_log=True),
+            release=dict(type="str", default="latest"),
+            asset_suffix=dict(type="str", required=True),
+            tmp_dir=dict(type="path", default="/tmp"),
+            dest=dict(type="path", default="/usr/local/bin"),
+        ),
+        supports_check_mode=True,
     )
 
-    result = dict(changed=False, original_message="", message="")
-
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
-
-    if module.check_mode:
-        module.exit_json(**result)
-
-    if not HAS_GITHUB_API:
+    if not HAS_GITHUB:
         module.fail_json(
-            msg=missing_required_lib("github3.py"), exception=GITHUB_IMP_ERR
+            msg=missing_required_lib("github3.py"), exception=GITHUB_IMPORT_ERROR
         )
 
-    repo = module.params["repo"]
-    user = module.params["user"]
-    release = module.params["release"]
-
-    repository = gh_obj.repository(user, repo)
-
-    if not repository:
-        module.fail_json(msg="Repository %s/%s doesn't exist" % (user, repo))
-
-    if release == "latest":
-        release = repository.latest_release()
-        if release:
-            module.exit_json(tag=release.tag_name)
-        else:
-            module.exit_json(tag=None)
+    gh_package = GitHubPackage(module)
 
 
 def main():

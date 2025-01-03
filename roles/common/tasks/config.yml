@@ -61,9 +61,9 @@
         - { src: '{{ common_directories.projects }}/config-files/gnupg/gpg-agent.conf', dest: '{{ common_directories.config }}/.gnupg/gpg-agent.conf' }
         - { src: '{{ common_directories.projects }}/config-files/gnupg/gpg.conf', dest: '{{ common_directories.config }}/.gnupg/gpg.conf' }
         - { src: '{{ common_directories.projects }}/config-files/lazygit/config.yml', dest: '{{ common_directories.config }}/lazygit/config.yml' }
-        - { src: '{{ common_directories.projects }}/config-files/bin/git-helper.py', dest: '{{ home_bin_directory }}/git-helper.py' }
-        - { src: '{{ common_directories.projects }}/config-files/bin/ssh-connd.py', dest: '{{ home_bin_directory }}/ssh-connd.py' }
-        - { src: '{{ common_directories.projects }}/config-files/bin/tmux-send-keys.sh', dest: '{{ home_bin_directory }}/tmux-send-keys.sh' }
+        - { src: '{{ common_directories.projects }}/config-files/bin/git-helper.py', dest: '{{ common_directories.local_bin }}/git-helper.py' }
+        - { src: '{{ common_directories.projects }}/config-files/bin/ssh-connd.py', dest: '{{ common_directories.local_bin }}/ssh-connd.py' }
+        - { src: '{{ common_directories.projects }}/config-files/bin/tmux-send-keys.sh', dest: '{{ common_directories.local_bin }}/tmux-send-keys.sh' }
         - { src: '{{ common_directories.projects }}/config-files/starship.toml', dest: '{{ common_directories.config }}/starship.toml' }
         - { src: '{{ common_directories.projects }}/config-files/fish/config.fish', dest: '{{ common_directories.config }}/fish/config.fish' }
         - { src: '{{ common_directories.projects }}/config-files/fish/completions', dest: '{{ common_directories.config }}/fish/completions' }

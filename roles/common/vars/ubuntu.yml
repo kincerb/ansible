@@ -1,12 +1,14 @@
 ---
 common_packages:
   - apt-transport-https
+  - build-essential
   - ca-certificates
   - curl
   - dialog
   - dosfstools
   - dpkg
   - e2fsprogs
+  - file
   - findutils
   - fish
   - fuse3
@@ -19,6 +21,7 @@ common_packages:
   - jq
   - lz4
   - pinentry-curses
+  - procps
   - readline-common
   - rsync
   - socat

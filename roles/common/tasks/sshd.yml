@@ -1,0 +1,23 @@
+---
+- name: Configure sshd and setup public keys
+  become: true
+  block:
+    - name: Configure sshd
+      ansible.builtin.template:
+        dest: /etc/ssh/sshd_config.d/01-nucoder.conf
+        group: root
+        mode: '644'
+        owner: root
+        src: sshd.conf.j2
+      notify:
+        - Reload sshd
+
+- name: Add SSH public keys from config-files
+  ansible.posix.authorized_key:
+    user: kincerb
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - kincerb_gpg_auth1.pub
+    - kincerb_gpg_auth2.pub
+...

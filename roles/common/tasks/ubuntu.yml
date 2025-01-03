@@ -3,56 +3,24 @@
   ansible.builtin.include_vars:
     file: ubuntu.yml
 
-- name: Install common packages and add relevant symlinks
+- name: Install common packages
   become: true
+  ansible.builtin.apt:
+    update_cache: true
+    package:
+      "{{ common_packages }}"
+
+- name: Install and configure sshd
+  become: true
+  tags:
+    - sshd
   block:
-    - name: Install packages found in supported repos
+    - name: Install openssh-server
       ansible.builtin.apt:
         update_cache: true
-        package:
-          "{{ common_packages }}"
+        package: openssh-server
 
-    - name: Symlink binaries to common names
-      ansible.builtin.file:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-        state: link
-        force: true
-      loop:
-        - { src: /usr/bin/batcat, dest: /usr/local/bin/bat }
-        - { src: /usr/bin/fdfind, dest: /usr/local/bin/fd }
-
-- name: Get nodejs stat
-  ansible.builtin.stat:
-    path: /usr/bin/node
-  register: node_stat
-  ignore_errors: true
-
-- name: Install nodejs
-  when: node_stat.stat
-  block:
-    - name: Download script
-      ansible.builtin.get_url:
-        url: "https://deb.nodesource.com/setup_{{ common_node_version }}.x"
-        dest: /tmp/node_setup_22.x.sh
-        mode: '0750'
-
-    - name: Run nodejs setup script
-      become: true
-      ansible.builtin.command: "/tmp/node_setup_{{ common_node_version }}.x.sh"
-      args:
-        creates: /usr/bin/node
-
-    - name: Install nodejs via apt
-      become: true
-      ansible.builtin.apt:
-        name: nodejs
-
-  always:
-    - name: Remove nodejs setup script
-      ansible.builtin.file:
-        path: "/tmp/node_setup_{{ common_node_version }}.x.sh"
-        state: absent
-      ignore_errors: true # noqa ignore-errors
+    - name: Configure sshd
+      ansible.builtin.import_tasks: sshd.yml
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

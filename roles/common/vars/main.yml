@@ -17,24 +17,6 @@ common_appimages:
       asset_include_tag: true
       dest_name: WezTerm.AppImage
       link_name: wezterm
-    - name: Neovim
-      user: neovim
-      repo: neovim
-      url_prefix: https://github.com
-      asset_prefix: nvim
-      asset_suffix: .appimage
-      asset_include_tag: false
-      dest_name: nvim.AppImage
-      link_name: nvim
-common_git_software:
-    - name: Delta
-      user: dandavison
-      repo: delta
-      url_prefix: https://github.com
-      asset_prefix: delta-
-      asset_suffix: -x86_64-unknown-linux-gnu.tar.gz
-      asset_include_tag: true
-      bin_name: delta
-      link_name:
+common_user_id: kincerb
 ...
 # vim: ft=yaml.ansible

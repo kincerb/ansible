@@ -24,11 +24,20 @@
     - name: Configure sshd
       ansible.builtin.import_tasks: sshd.yml
 
+- name: Stat homebrew
+  ansible.builtin.stat:
+    path: /home/linuxbrew/.linuxbrew
+  register: linuxbrew
+  tags:
+    - brew
+    - never
+	
 - name: Setup Homebrew
   become: true
   tags:
     - brew
     - never
+  when: not linuxbrew.stat.exists
   block:
     - name: Download install script
       ansible.builtin.get_url:
@@ -39,12 +48,32 @@
     - name: Run install script
       ansible.builtin.command:
         cmd: /tmp/install-homebrew.sh
-        creates: /home/linuxbrew/.linuxbrew
 
   always:
     - name: Remove install script
       ansible.builtin.file:
         dest: /tmp/install-homebrew.sh
         state: absent
+
+- name: Install software via Homebrew
+  community.general.homebrew:
+    state: present
+    update_homebrew: true
+    name:
+      - atuin
+      - bat
+      - git-delta
+      - eza
+      - fd
+      - fzf
+      - lazygit
+      - neovim
+      - node
+      - ripgrep
+      - starship
+  when: linuxbrew.stat.exists
+  tags:
+    - brew
+    - never
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

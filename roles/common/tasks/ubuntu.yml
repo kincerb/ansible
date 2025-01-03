@@ -31,29 +31,6 @@
   tags:
     - brew
     - never
-	
-- name: Setup Homebrew
-  become: true
-  tags:
-    - brew
-    - never
-  when: not linuxbrew.stat.exists
-  block:
-    - name: Download install script
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-        dest: /tmp/install-homebrew.sh
-        mode: '750'
-
-    - name: Run install script
-      ansible.builtin.command:
-        cmd: /tmp/install-homebrew.sh
-
-  always:
-    - name: Remove install script
-      ansible.builtin.file:
-        dest: /tmp/install-homebrew.sh
-        state: absent
 
 - name: Install software via Homebrew
   community.general.homebrew:

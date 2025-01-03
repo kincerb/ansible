@@ -14,6 +14,7 @@
   become: true
   tags:
     - sshd
+    - never
   block:
     - name: Install openssh-server
       ansible.builtin.apt:
@@ -22,5 +23,28 @@
 
     - name: Configure sshd
       ansible.builtin.import_tasks: sshd.yml
+
+- name: Setup Homebrew
+  become: true
+  tags:
+    - brew
+    - never
+  block:
+    - name: Download install script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        dest: /tmp/install-homebrew.sh
+        mode: '750'
+
+    - name: Run install script
+      ansible.builtin.command:
+        cmd: /tmp/install-homebrew.sh
+        creates: /home/linuxbrew/.linuxbrew
+
+  always:
+    - name: Remove install script
+      ansible.builtin.file:
+        dest: /tmp/install-homebrew.sh
+        state: absent
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

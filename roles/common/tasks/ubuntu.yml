@@ -39,15 +39,27 @@
     name:
       - atuin
       - bat
+      - bottom
       - git-delta
+      - exiftool
       - eza
       - fd
+      - fish
       - fzf
+      - git-delta
+      - imagemagick
       - lazygit
       - neovim
       - node
+      - poppler
       - ripgrep
+      - rust
+      - sevenzip
       - starship
+      - tlrc
+      - xz
+      - yazi
+      - zoxide
   when: linuxbrew.stat.exists
   tags:
     - brew

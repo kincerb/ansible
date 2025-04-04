@@ -10,7 +10,6 @@ common_packages:
   - e2fsprogs
   - file
   - findutils
-  - fish
   - fuse3
   - git
   - gnupg
@@ -24,13 +23,13 @@ common_packages:
   - procps
   - readline-common
   - rsync
+  - scdaemon
   - socat
   - software-properties-common
   - sysfsutils
   - tmux
   - unzip
   - util-linux
-  - xsel
   - xz-utils
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

@@ -18,6 +18,7 @@ common_packages:
   - gzip
   - iftop
   - jq
+  - libfuse2t64
   - lz4
   - pinentry-curses
   - procps
@@ -28,8 +29,10 @@ common_packages:
   - software-properties-common
   - sysfsutils
   - tmux
+  - ubuntu-restricted-extras
   - unzip
   - util-linux
+  - wl-clipboard
   - xz-utils
 ...
 # vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

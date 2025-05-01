@@ -44,6 +44,7 @@
         force: true
       loop:
         - { src: '{{ common_directories.projects }}/config-files/atuin/config.toml', dest: '{{ common_directories.config }}/atuin/config.toml' }
+        - { src: '{{ common_directories.projects }}/config-files/bottom', dest: '{{ common_directories.config }}/bottom' }
         - { src: '{{ common_directories.projects }}/config-files/joshuto', dest: '{{ common_directories.config }}/joshuto' }
         - { src: '{{ common_directories.projects }}/config-files/ptpython', dest: '{{ common_directories.config }}/ptpython' }
         - { src: '{{ common_directories.projects }}/config-files/ruff', dest: '{{ common_directories.config }}/ruff' }

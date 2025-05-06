@@ -1,0 +1,6 @@
+---
+- name: Install OpenZFS
+  hosts: zfs
+  become: true
+  roles:
+    - zfs

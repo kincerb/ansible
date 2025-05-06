@@ -28,7 +28,6 @@ common_packages:
   - socat
   - software-properties-common
   - sysfsutils
-  - tmux
   - ubuntu-restricted-extras
   - unzip
   - util-linux

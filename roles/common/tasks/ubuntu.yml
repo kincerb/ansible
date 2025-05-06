@@ -59,6 +59,7 @@
       - speedtest-cli
       - starship
       - tlrc
+      - tmux
       - xz
       - yazi
       - zoxide

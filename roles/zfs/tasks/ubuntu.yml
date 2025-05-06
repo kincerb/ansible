@@ -1,0 +1,13 @@
+---
+- name: Bring in Ubuntu vars
+  ansible.builtin.include_vars:
+    file: ubuntu.yml
+
+- name: Install zfs packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    package:
+      "{{ zfs_packages }}"
+...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

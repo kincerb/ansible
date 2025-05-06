@@ -1,0 +1,6 @@
+---
+zfs_packages:
+  - zfsutils-linux
+  - sanoid
+...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

@@ -1,0 +1,4 @@
+---
+zfs_main_pool: tank
+...
+# vim: ft=yaml.ansible

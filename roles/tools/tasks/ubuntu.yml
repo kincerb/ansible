@@ -1,0 +1,71 @@
+---
+- name: Bring in Ubuntu vars
+  ansible.builtin.include_vars:
+    file: ubuntu.yml
+
+- name: Install common packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    package:
+      "{{ common_packages }}"
+
+- name: Install and configure sshd
+  become: true
+  tags:
+    - sshd
+    - never
+  block:
+    - name: Install openssh-server
+      ansible.builtin.apt:
+        update_cache: true
+        package: openssh-server
+
+    - name: Configure sshd
+      ansible.builtin.import_tasks: sshd.yml
+
+- name: Stat homebrew
+  ansible.builtin.stat:
+    path: /home/linuxbrew/.linuxbrew
+  register: linuxbrew
+  tags:
+    - brew
+    - never
+
+- name: Install software via Homebrew
+  community.general.homebrew:
+    state: present
+    update_homebrew: true
+    name:
+      - atuin
+      - bat
+      - bottom
+      - chafa
+      - git-delta
+      - exiftool
+      - eza
+      - fd
+      - fish
+      - fzf
+      - git-delta
+      - imagemagick
+      - lazygit
+      - neovim
+      - node
+      - poppler
+      - ripgrep
+      - rust
+      - sevenzip
+      - speedtest-cli
+      - starship
+      - tlrc
+      - tmux
+      - xz
+      - yazi
+      - zoxide
+  when: linuxbrew.stat.exists
+  tags:
+    - brew
+    - never
+...
+# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

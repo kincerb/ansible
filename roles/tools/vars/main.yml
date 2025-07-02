@@ -1,0 +1,4 @@
+---
+tools_project_dir: "{{ ansible_facts['env']['HOME'] }}/Projects"
+...
+# vim: ft=yaml.ansible

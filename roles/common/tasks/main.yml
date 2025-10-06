@@ -9,7 +9,6 @@
   ansible.builtin.import_tasks: config.yml
   tags:
     - config
-    - never
 
 - name: Install appimages
   ansible.builtin.include_tasks:

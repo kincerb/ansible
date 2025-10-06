@@ -1,15 +1,15 @@
 ---
 - name: Install development packages
+  become: true
   ansible.builtin.apt:
     package:
       - build-essential
       - checkinstall
-      - libreadline-gplv2-dev
-      - libncursesw5-dev
+      - libreadline-dev
+      - libncurses-dev
       - libssl-dev
       - libsqlite3-dev
       - tk-dev
       - libgdbm-dev
-      - libc6-dev
       - libbz2-dev
 ...

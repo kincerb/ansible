@@ -14,11 +14,5 @@
     virtualenv_command: python3 -m venv
     state: latest
   loop:
-    - doq
     - pynvim
     - pip
-    - isort
-    - python-lsp-server
-    - python-lsp-black
-    - pylsp-mypy
-    - ruff-lsp

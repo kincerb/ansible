@@ -21,6 +21,8 @@ common_packages:
   - libfuse2t64
   - lz4
   - pinentry-curses
+  - python3.12
+  - python3.12-venv
   - procps
   - readline-common
   - rsync

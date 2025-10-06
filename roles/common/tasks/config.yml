@@ -12,9 +12,11 @@
         - { path: '{{ common_home_directory }}/.local/venvs', mode: '0750' }
         - { path: '{{ common_directories.config }}', mode: '0750' }
         - { path: '{{ common_directories.config }}/atuin', mode: '0750' }
+        - { path: '{{ common_directories.config }}/ghostty', mode: '0750' }
         - { path: '{{ common_directories.config }}/fish', mode: '0750' }
         - { path: '{{ common_directories.config }}/lazygit', mode: '0750' }
         - { path: '{{ common_directories.config }}/nvim', mode: '0750' }
+        - { path: '{{ common_directories.config }}/tmux/plugins', mode: '0750' }
         - { path: '{{ common_directories.config }}/.gnupg', mode: '0700' }
         - { path: '{{ common_directories.local_bin }}', mode: '0750' }
         - { path: '{{ common_directories.ssh }}', mode: '0700' }
@@ -45,10 +47,10 @@
       loop:
         - { src: '{{ common_directories.projects }}/config-files/atuin/config.toml', dest: '{{ common_directories.config }}/atuin/config.toml' }
         - { src: '{{ common_directories.projects }}/config-files/bottom', dest: '{{ common_directories.config }}/bottom' }
-        - { src: '{{ common_directories.projects }}/config-files/joshuto', dest: '{{ common_directories.config }}/joshuto' }
         - { src: '{{ common_directories.projects }}/config-files/ptpython', dest: '{{ common_directories.config }}/ptpython' }
         - { src: '{{ common_directories.projects }}/config-files/ruff', dest: '{{ common_directories.config }}/ruff' }
-        - { src: '{{ common_directories.projects }}/config-files/tmux', dest: '{{ common_directories.config }}/tmux' }
+        - { src: '{{ common_directories.projects }}/config-files/tmux/main', dest: '{{ common_directories.config }}/tmux/main' }
+        - { src: '{{ common_directories.projects }}/config-files/tmux/aux', dest: '{{ common_directories.config }}/tmux/aux' }
         - { src: '{{ common_directories.projects }}/config-files/wezterm', dest: '{{ common_directories.config }}/wezterm' }
         - { src: '{{ common_directories.projects }}/config-files/nvim/lua', dest: '{{ common_directories.config }}/nvim/lua' }
         - { src: '{{ common_directories.projects }}/config-files/nvim/snippets', dest: '{{ common_directories.config }}/nvim/snippets' }
@@ -61,6 +63,7 @@
         - { src: '{{ common_directories.projects }}/config-files/gnupg/dirmngr.conf', dest: '{{ common_directories.config }}/.gnupg/dirmngr.conf' }
         - { src: '{{ common_directories.projects }}/config-files/gnupg/gpg-agent.conf', dest: '{{ common_directories.config }}/.gnupg/gpg-agent.conf' }
         - { src: '{{ common_directories.projects }}/config-files/gnupg/gpg.conf', dest: '{{ common_directories.config }}/.gnupg/gpg.conf' }
+        - { src: '{{ common_directories.projects }}/config-files/ghostty/config', dest: '{{ common_directories.config }}/ghostty/config' }
         - { src: '{{ common_directories.projects }}/config-files/lazygit/config.yml', dest: '{{ common_directories.config }}/lazygit/config.yml' }
         - { src: '{{ common_directories.projects }}/config-files/bin/git-helper.py', dest: '{{ common_directories.local_bin }}/git-helper.py' }
         - { src: '{{ common_directories.projects }}/config-files/bin/ssh-connd.py', dest: '{{ common_directories.local_bin }}/ssh-connd.py' }

@@ -8,17 +8,18 @@ MaxSessions 5
 PasswordAuthentication no
 PermitRootLogin no
 PermitTunnel no
+PermitUserEnvironment yes
 X11Forwarding no
 TCPKeepAlive yes
 
 Match User {{ common_user_id }}
+    AcceptEnv *
     AllowAgentForwarding yes
     AllowStreamLocalForwarding yes
     AllowTcpForwarding yes
     GatewayPorts yes
     MaxSessions 25
     PermitTunnel yes
-    PermitUserEnvironment yes
     X11Forwarding yes
 # vim: set ts=4 sw=4 sts=4 :
 {# vim: set ft=sshdconfig.jinja2: #}# vim: set ft=sshdconfig:

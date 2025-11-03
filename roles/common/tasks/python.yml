@@ -15,14 +15,6 @@
         name: '{{ item }}'
       loop:
         - ansible
-        - ranger-fm
-
-    - name: Inject pillow into ranger-fm venv
-      community.general.pipx:
-        state: inject
-        name: ranger-fm
-        inject_packages:
-          - pillow
 
     - name: Inject docker and winrm into ansible venv
       community.general.pipx:

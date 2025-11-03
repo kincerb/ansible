@@ -47,9 +47,12 @@
       - fd
       - fish
       - fzf
+      - go
       - git-delta
       - imagemagick
       - lazygit
+      - lua
+      - luarocks
       - neovim
       - node
       - poppler
@@ -60,6 +63,8 @@
       - starship
       - tlrc
       - tmux
+      - tree-sitter
+      - tree-sitter-cli
       - xz
       - yazi
       - zoxide

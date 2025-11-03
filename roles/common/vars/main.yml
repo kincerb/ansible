@@ -1,5 +1,6 @@
 ---
 common_home_directory: "{{ lookup('env', 'HOME') }}"
+common_user_id: "{{ lookup('env', 'USER') }}"
 common_directories:
     appimage: "{{ common_home_directory }}/Applications"
     local_bin: "{{ common_home_directory }}/.local/bin"
@@ -17,6 +18,5 @@ common_appimages:
       asset_include_tag: true
       dest_name: WezTerm.AppImage
       link_name: wezterm
-common_user_id: kincerb
 ...
 # vim: ft=yaml.ansible

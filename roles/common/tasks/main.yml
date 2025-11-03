@@ -10,19 +10,6 @@
   tags:
     - config
 
-- name: Install appimages
-  ansible.builtin.include_tasks:
-    file: install_appimage.yml
-    apply:
-      vars:
-        appimage: "{{ item }}"
-      tags:
-        - appimage
-  loop: "{{ common_appimages }}"
-  tags:
-    - appimage
-    - never
-
 - name: Run common tasks for Ubuntu
   ansible.builtin.import_tasks: ubuntu.yml
   when: ansible_facts['os_family']|lower == 'debian'

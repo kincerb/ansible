@@ -1,0 +1,13 @@
+---
+common_appimages:
+  - name: WezTerm
+    user: wez
+    repo: wezterm
+    url_prefix: https://github.com
+    asset_prefix: WezTerm-
+    asset_suffix: -Ubuntu20.04.AppImage
+    asset_include_tag: true
+    dest_name: WezTerm.AppImage
+    link_name: wezterm
+---
+# vim: ft=yaml.ansible

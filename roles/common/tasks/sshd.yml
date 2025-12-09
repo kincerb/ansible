@@ -20,4 +20,5 @@
   with_file:
     - kincerb_gpg_auth1.pub
     - kincerb_gpg_auth2.pub
+    - kincerb_main_lab.pub
 ...

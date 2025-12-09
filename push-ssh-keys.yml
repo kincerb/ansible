@@ -1,0 +1,17 @@
+---
+- name: Add public SSH keys
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Add SSH public keys from config-files
+      ansible.posix.authorized_key:
+        user: kincerb
+        state: present
+        key: "{{ item }}"
+      with_file:
+        - roles/common/files/kincerb_gpg_auth1.pub
+        - roles/common/files/kincerb_gpg_auth2.pub
+        - roles/common/files/kincerb_main_lab.pub
+...
+# vim: ft=yaml.ansible

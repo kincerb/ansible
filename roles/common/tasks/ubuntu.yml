@@ -41,6 +41,7 @@
       - bat
       - bottom
       - chafa
+      - direnv
       - git-delta
       - exiftool
       - eza

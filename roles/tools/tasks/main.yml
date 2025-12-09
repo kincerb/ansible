@@ -1,6 +1,0 @@
----
-- name: Configure atuin
-  ansible.builtin.import_tasks: atuin.yml
-  when: services|default([]) contains "atuin"
-...
-# vim: set ft=yaml.ansible ts=2 sts=2 sw=2:

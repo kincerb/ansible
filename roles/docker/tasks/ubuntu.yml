@@ -4,11 +4,11 @@
     - name: Download gpg key from docker # noqa risky-file-permissions
       ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
-        dest: /etc/apt/trusted.gpg.d/docker.asc
+        dest: /etc/apt/keyrings/docker.asc
 
     - name: Setup docker repo
       ansible.builtin.apt_repository:
-        repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
         state: present
 
     - name: Install docker packages
